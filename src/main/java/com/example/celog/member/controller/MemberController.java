@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -51,6 +52,14 @@ public class MemberController {
     public SuccessResponse memberCheck( @RequestParam("email") String email) throws IllegalAccessException {
         memberService.memberCheck(email);
         return SuccessResponse.of(HttpStatus.OK,"사용가능한 계정입니다");
+    }
+
+    /**
+     * 회원 토큰 갱신
+    **/
+    @GetMapping("/members/token")
+    public  SuccessResponse issuedToken(HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException {
+        return memberService.issueToken(request,response);
     }
 
 
