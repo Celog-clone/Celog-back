@@ -9,6 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -16,6 +20,15 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<CommentResponseDto>> listComment(Long id) {
+        List<Comment> commentList = commentRepository.findByPostIdAndOrderByModifiedAt(id);
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+        for (Comment comment : commentList) {
+            commentResponseDtoList.add(CommentResponseDto.from(comment));
+        }
+        return ResponseEntity.ok(commentResponseDtoList);
+    }
 
     public ResponseEntity<CommentResponseDto> saveComment(Long id, CommentRequestDto commentRequestDto) {
 
@@ -24,13 +37,13 @@ public class CommentService {
     }
 
     public ResponseEntity<CommentResponseDto> modifyComment(Long id, CommentRequestDto commentRequestDto) {
-
-        try {
-            commentRepository.findById(id);
-        } catch (NullPointerException e) {
-            e.getMessage();
+        Optional<Comment> comment = commentRepository.findById(id);
+        if (comment.isEmpty()) {
+            throw new NullPointerException("댓글이 없습니다.");
         }
 
-        return null;
+        return ResponseEntity.ok(CommentResponseDto.from(commentRepository.save(Comment.of(commentRequestDto))));
     }
+
+
 }

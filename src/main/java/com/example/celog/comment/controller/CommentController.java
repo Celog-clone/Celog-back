@@ -7,12 +7,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class CommentController {
 
     private final CommentService commentService;
+
+    @GetMapping("/comments/{id}")
+    public ResponseEntity<List<CommentResponseDto>> commentList(@PathVariable Long id) {
+        return commentService.listComment(id);
+    }
 
     @PostMapping("/comments/{id}")
     public ResponseEntity<CommentResponseDto> commentSave(@PathVariable Long id,
