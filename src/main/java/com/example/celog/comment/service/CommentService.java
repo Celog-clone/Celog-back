@@ -4,7 +4,9 @@ import com.example.celog.comment.dto.request.CommentRequestDto;
 import com.example.celog.comment.dto.response.CommentResponseDto;
 import com.example.celog.comment.entity.Comment;
 import com.example.celog.comment.repository.CommentRepository;
+import com.example.celog.common.SuccessResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +39,7 @@ public class CommentService {
     }
 
     public ResponseEntity<CommentResponseDto> modifyComment(Long id, CommentRequestDto commentRequestDto) {
+
         Optional<Comment> comment = commentRepository.findById(id);
         if (comment.isEmpty()) {
             throw new NullPointerException("댓글이 없습니다.");
@@ -46,4 +49,14 @@ public class CommentService {
     }
 
 
+    public ResponseEntity<SuccessResponse> removeComment(Long id) {
+
+        Optional<Comment> comment = commentRepository.findById(id);
+        if (comment.isEmpty()) {
+            throw new NullPointerException("댓글이 없습니다.");
+        }
+
+        commentRepository.deleteById(id);
+        return ResponseEntity.ok(SuccessResponse.of(HttpStatus.OK, "댓글 삭제 완료"));
+    }
 }

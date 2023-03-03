@@ -3,6 +3,7 @@ package com.example.celog.comment.controller;
 import com.example.celog.comment.dto.request.CommentRequestDto;
 import com.example.celog.comment.dto.response.CommentResponseDto;
 import com.example.celog.comment.service.CommentService;
+import com.example.celog.common.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class CommentController {
 
     @PostMapping("/comments/{id}")
     public ResponseEntity<CommentResponseDto> commentSave(@PathVariable Long id,
-                                            @RequestBody CommentRequestDto commentRequestDto) {
+                                                          @RequestBody CommentRequestDto commentRequestDto) {
         return commentService.saveComment(id, commentRequestDto);
     }
 
@@ -33,5 +34,9 @@ public class CommentController {
         return commentService.modifyComment(id, commentRequestDto);
     }
 
+    @DeleteMapping("/comments/{comment-id}")
+    public ResponseEntity<SuccessResponse> commentRemove(@PathVariable Long id) {
+        return commentService.removeComment(id);
+    }
 
 }
