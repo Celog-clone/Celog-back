@@ -1,6 +1,7 @@
 package com.example.celog.member.controller;
 
 import com.example.celog.common.SuccessResponse;
+import com.example.celog.member.dto.LoginRequestDto;
 import com.example.celog.member.dto.SignupRequestDto;
 import com.example.celog.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
@@ -33,6 +35,14 @@ public class MemberController {
             throw new IllegalAccessException("이메일 형식이 아닙니다.");
         }
         return memberService.signup(signupRequestDto);
+    }
+
+    /**
+     * 로그인 메서드
+     **/
+    @PostMapping("/members/login")
+    public SuccessResponse login(@RequestBody LoginRequestDto requestDto, HttpServletResponse response){
+        return memberService.login(requestDto,response);
     }
 
 
