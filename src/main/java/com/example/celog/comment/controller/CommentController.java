@@ -15,12 +15,16 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/comments/{id}")
-    public ResponseEntity<CommentResponseDto> createComment(@PathVariable Long id,
+    public ResponseEntity<CommentResponseDto> commentSave(@PathVariable Long id,
                                             @RequestBody CommentRequestDto commentRequestDto) {
-        return commentService.commentCreate(id, commentRequestDto);
+        return commentService.saveComment(id, commentRequestDto);
     }
 
-
+    @PutMapping("/comments/{comment-id}")
+    public ResponseEntity<CommentResponseDto> commentModify(@PathVariable Long id,
+                                                            @RequestBody CommentRequestDto commentRequestDto) {
+        return commentService.modifyComment(id, commentRequestDto);
+    }
 
 
 }

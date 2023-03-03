@@ -11,14 +11,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CommentService {
 
     private final CommentRepository commentRepository;
 
-    @Transactional
-    public ResponseEntity<CommentResponseDto> commentCreate(Long id, CommentRequestDto commentRequestDto) {
+
+    public ResponseEntity<CommentResponseDto> saveComment(Long id, CommentRequestDto commentRequestDto) {
 
         // 댓글 작성 / 작성된 댓글 db에 저장
         return ResponseEntity.ok(CommentResponseDto.from(commentRepository.save(Comment.of(commentRequestDto))));
+    }
+
+    public ResponseEntity<CommentResponseDto> modifyComment(Long id, CommentRequestDto commentRequestDto) {
+
+        try {
+            commentRepository.findById(id);
+        } catch (NullPointerException e) {
+            e.getMessage();
+        }
+
+        return null;
     }
 }
