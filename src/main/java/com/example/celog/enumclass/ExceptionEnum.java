@@ -15,9 +15,7 @@ public enum ExceptionEnum {
     DUPLICATE_USER(400,"중복된 사용자 입니다"),
     NOT_EXIST_CATEGORY(400,"카테고리가 없습니다"),
     WRONG_VALUE(400,"잘못된 요청값입니다"),
-
     JWT_EXPIRED_TOKEN(400,"다시 로그인 해주세요"),
-
     INVALID_EMAIL_REG(400,"이메일 형식이 아닙니다"),
     INVALID_PASSWD_REG(400,"패스워드는 영문자/숫자/특수문자 포함 8자리 이상입니다.");
 

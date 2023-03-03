@@ -1,2 +1,8 @@
-package com.example.celog.post.entity;public class Post {
+package com.example.celog.post.entity;
+
+import lombok.Getter;
+
+@Getter
+public class Post {
+
 }
