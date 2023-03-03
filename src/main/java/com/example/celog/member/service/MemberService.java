@@ -40,16 +40,15 @@ public class MemberService {
      * 회원가입 기능
     * */
     @Transactional
-    public SuccessResponse signup(SignupRequestDto signupRequestDto) throws IllegalAccessException {
-        // 회원가입 유저가 있는지 확인하는 부분
-        // 기존에 id체크하는 부분이 있어서 이 부분 관련 협의 필요
-        memberCheck(signupRequestDto.getEmail());
+    public SuccessResponse signup(SignupRequestDto signupRequestDto) {
+
         memberRepository.save(
                 Member.builder()
                         .nickname(signupRequestDto.getNickname())
                         .password(passwordEncoder.encode(signupRequestDto.getPassword()))
                         .email(signupRequestDto.getEmail())
                         .build());
+
         return SuccessResponse.of(HttpStatus.OK,"회원가입 성공");
     }
 
