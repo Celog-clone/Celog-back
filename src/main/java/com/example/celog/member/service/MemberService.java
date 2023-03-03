@@ -1,8 +1,5 @@
 package com.example.celog.member.service;
 
-import com.example.celog.common.ApiResponseDto;
-import com.example.celog.common.ErrorResponse;
-import com.example.celog.common.ResponseUtils;
 import com.example.celog.common.SuccessResponse;
 import com.example.celog.jwt.JwtUtil;
 import com.example.celog.jwt.RefreshToken;
@@ -12,7 +9,6 @@ import com.example.celog.member.dto.LoginRequestDto;
 import com.example.celog.member.dto.SignupRequestDto;
 import com.example.celog.member.entity.Member;
 import com.example.celog.member.repository.MemberRepository;
-import com.example.celog.post.entity.Post;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
@@ -90,4 +87,18 @@ public class MemberService {
             throw new IllegalAccessException("중복회원 입니다.");
         }
     }
+
+    /**
+     * 토큰 갱신
+     **/
+    public SuccessResponse issueToken(HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException {
+        String refreshToken = jwtUtil.resolveToken(request, "Refresh");
+        if(!jwtUtil.refreshTokenValidation(refreshToken)){
+            throw new IllegalAccessException("토큰이 유효하지 않습니다.");
+        }
+
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(jwtUtil.getUserId(refreshToken), "Access"));
+        return SuccessResponse.of(HttpStatus.OK, "토큰 갱신 성공.");
+    }
+
 }
