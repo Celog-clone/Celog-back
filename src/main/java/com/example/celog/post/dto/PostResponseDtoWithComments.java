@@ -1,7 +1,6 @@
 package com.example.celog.post.dto;
 
 ;
-import com.example.celog.post.entity.Comment;
 import com.example.celog.post.entity.Post;
 import lombok.Builder;
 import lombok.Getter;

@@ -2,6 +2,7 @@ package com.example.celog.post.entity;
 
 import com.example.celog.post.dto.PostRequestDto;
 import com.example.celog.superclass.TimeStamped;
+import com.example.celog.superclass.Timestamped;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Post extends TimeStamped {
+public class Post extends Timestamped{
     @Id
     @Column(name = "post_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
