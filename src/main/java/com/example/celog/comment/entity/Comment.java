@@ -1,6 +1,7 @@
 package com.example.celog.comment.entity;
 
 import com.example.celog.comment.dto.request.CommentRequestDto;
+import com.example.celog.member.entity.Member;
 import com.example.celog.superclass.Timestamped;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -21,18 +22,20 @@ public class Comment extends Timestamped {
     @NotBlank(message = "내용을 적어주세요")
     private String comments;
 
-//    @ManyToOne
-//    @JoinColumn(name = "member_id")
-//    private Member member;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Builder
-    private Comment(CommentRequestDto commentRequestDto) {
+    private Comment(CommentRequestDto commentRequestDto, Member member) {
         comments = commentRequestDto.getComments();
+        this.member = member;
     }
 
-    public static Comment of(CommentRequestDto commentRequestDto) {
+    public static Comment of(CommentRequestDto commentRequestDto, Member member) {
         return Comment.builder()
                 .commentRequestDto(commentRequestDto)
+                .member(member)
                 .build();
     }
 
