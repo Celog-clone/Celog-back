@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,14 +27,14 @@ public class CommentController {
 
     @PostMapping("/posts/{id}/comments")
     public ResponseEntity<CommentResponseDto> commentSave(@PathVariable Long id,
-                                                          @RequestBody CommentRequestDto commentRequestDto,
+                                                          @Valid @RequestBody CommentRequestDto commentRequestDto,
                                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.saveComment(id, commentRequestDto, userDetails.getUser());
     }
 
     @PutMapping("/posts/{id}/comments/{comment_id}")
     public ResponseEntity<CommentResponseDto> commentModify(@PathVariable Long id,
-                                                            @PathVariable Long comment_id,
+                                                            @Valid @PathVariable Long comment_id,
                                                             @RequestBody CommentRequestDto commentRequestDto,
                                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.modifyComment(id, comment_id, commentRequestDto, userDetails.getUser());
