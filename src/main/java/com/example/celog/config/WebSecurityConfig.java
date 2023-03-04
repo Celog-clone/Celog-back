@@ -1,3 +1,5 @@
+package com.example.celog.config;
+
 import com.example.celog.jwt.JwtAuthFilter;
 import com.example.celog.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -57,4 +59,6 @@ public class WebSecurityConfig {
         return http.build();
 
     }
+
+
 }

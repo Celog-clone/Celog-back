@@ -22,15 +22,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
-    @Transactional(readOnly = true)
-    public ResponseEntity<List<CommentResponseDto>> listComment(Long id) {
-        List<Comment> commentList = commentRepository.findByPostIdAndOrderByModifiedAt(id);
-        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-        for (Comment comment : commentList) {
-            commentResponseDtoList.add(CommentResponseDto.from(comment));
-        }
-        return ResponseEntity.ok(commentResponseDtoList);
-    }
+
 
     public ResponseEntity<CommentResponseDto> saveComment(Long id, CommentRequestDto commentRequestDto) {
 

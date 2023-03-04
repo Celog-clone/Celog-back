@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    List<Comment> findByPostIdAndOrderByModifiedAt(Long id);
+    //List<Comment> findByPostIdAndOrderByModifiedAt(Long id);
 
 }
