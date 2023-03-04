@@ -1,5 +1,6 @@
 package com.example.celog.post.entity;
 
+<<<<<<< HEAD
 import com.example.celog.post.dto.PostRequestDto;
 import com.example.celog.superclass.TimeStamped;
 import lombok.AccessLevel;
@@ -53,4 +54,10 @@ public class Post extends TimeStamped {
         this.contents = contents;
         this.image = image;
     }
+=======
+
+@Getter
+public class Post {
+
+>>>>>>> 932b8c7f9edc976dfea661800481deb7efecae14
 }
