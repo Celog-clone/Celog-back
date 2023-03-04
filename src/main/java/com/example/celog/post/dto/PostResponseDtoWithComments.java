@@ -27,20 +27,23 @@ public class PostResponseDtoWithComments {
 
     private List<Comment> commentList = new ArrayList<>();
 
+    private Long likeCount;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;
 
-    @Builder
-    private PostResponseDtoWithComments(Long id, String title, String contents, String image, String nickname, LocalDateTime createdAt, LocalDateTime modifiedAt, List<Comment> commentList) {
+    @Builder    // 매개변수 Post 아닌 이유?? 상훈님께 물어볼것
+    private PostResponseDtoWithComments(Long id, String title, String contents, String image, String nickname, Long likeCount, LocalDateTime createdAt, LocalDateTime modifiedAt, List<Comment> commentList) {
         this.id = id;
         this.title = title;
         this.contents = contents;
         this.image = image;
         this.nickname = nickname;
+        this.commentList = commentList;
+        this.likeCount = likeCount;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
-        this.commentList = commentList;
     }
 
     public static PostResponseDtoWithComments from(Post post, String nickname) {

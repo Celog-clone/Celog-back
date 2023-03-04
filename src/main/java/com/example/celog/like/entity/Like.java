@@ -1,16 +1,15 @@
 package com.example.celog.like.entity;
 
-import com.example.celog.like.dto.LikeRequestDto;
-import com.example.celog.like.dto.LikeResponseDto;
+import com.example.celog.member.entity.Member;
+import com.example.celog.post.entity.Post;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
+import static javax.persistence.FetchType.*;
 
 @Getter
 @Entity(name = "likes")
@@ -20,16 +19,25 @@ public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long likeCount;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     @Builder
-    private Like(LikeRequestDto likeRequestDto) {
-        likeCount = likeRequestDto.getLikeCount();
+    private Like(Post post, Member member) {
+        this.post = post;
+        this.member = member;
     }
 
-    public static Like of(LikeRequestDto likeRequestDto) {
+    public static Like of(Post post, Member member) {
         return Like.builder()
-                .likeRequestDto(likeRequestDto)
+                .post(post)
+                .member(member)
                 .build();
     }
 

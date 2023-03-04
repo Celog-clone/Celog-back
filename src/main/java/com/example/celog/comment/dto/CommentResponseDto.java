@@ -1,4 +1,4 @@
-package com.example.celog.comment.dto.response;
+package com.example.celog.comment.dto;
 
 import com.example.celog.comment.entity.Comment;
 import com.fasterxml.jackson.annotation.JsonFormat;

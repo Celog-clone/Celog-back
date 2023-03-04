@@ -1,4 +1,4 @@
-package com.example.celog.comment.dto.request;
+package com.example.celog.comment.dto;
 
 import lombok.Getter;
 

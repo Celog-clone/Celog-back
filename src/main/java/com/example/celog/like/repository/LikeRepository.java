@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface LikeRepository extends JpaRepository<Like, Long> {
-    Optional<Like> findByPostAndMemberId(Post post, Member member);
+    Optional<Like> findByPostAndMember(Post post, Member member);
 
     void deleteByPostId(Long postId);
 

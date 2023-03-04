@@ -19,7 +19,7 @@ public class PostController {
 
     // 게시물 등록
     @PostMapping("/posts")
-    public ApiResponseDto postAdd(@RequestParam Long memberId, @RequestBody PostRequestDto requestDto) {
+    public ApiResponseDto postAdd(@RequestParam Long memberId, @RequestBody PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.addPost(requestDto, memberId);
     }
 
