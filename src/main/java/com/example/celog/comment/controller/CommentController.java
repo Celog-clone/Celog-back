@@ -1,7 +1,7 @@
 package com.example.celog.comment.controller;
 
-import com.example.celog.comment.dto.request.CommentRequestDto;
-import com.example.celog.comment.dto.response.CommentResponseDto;
+import com.example.celog.comment.dto.CommentRequestDto;
+import com.example.celog.comment.dto.CommentResponseDto;
 import com.example.celog.comment.service.CommentService;
 import com.example.celog.common.SuccessResponse;
 import com.example.celog.security.UserDetailsImpl;
@@ -24,24 +24,26 @@ public class CommentController {
         return commentService.listComment(id);
     }
 
-    @PostMapping("/comments/{id}")
+    @PostMapping("/posts/{id}/comments")
     public ResponseEntity<CommentResponseDto> commentSave(@PathVariable Long id,
                                                           @RequestBody CommentRequestDto commentRequestDto,
                                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return commentService.saveComment(id, commentRequestDto, userDetails);
+        return commentService.saveComment(id, commentRequestDto, userDetails.getUser());
     }
 
-    @PutMapping("/comments/{comment-id}")
+    @PutMapping("/posts/{id}/comments/{comment_id}")
     public ResponseEntity<CommentResponseDto> commentModify(@PathVariable Long id,
+                                                            @PathVariable Long comment_id,
                                                             @RequestBody CommentRequestDto commentRequestDto,
                                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return commentService.modifyComment(id, commentRequestDto, userDetails);
+        return commentService.modifyComment(id, comment_id, commentRequestDto, userDetails.getUser());
     }
 
-    @DeleteMapping("/comments/{comment-id}")
+    @DeleteMapping("/posts/{id}/comments/{comment_id}")
     public ResponseEntity<SuccessResponse> commentRemove(@PathVariable Long id,
+                                                         @PathVariable Long comment_id,
                                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return commentService.removeComment(id, userDetails);
+        return commentService.removeComment(id, comment_id, userDetails.getUser());
     }
 
 }
