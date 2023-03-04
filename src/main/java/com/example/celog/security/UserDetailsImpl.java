@@ -1,7 +1,7 @@
 package com.example.celog.security;
 
-import com.example.celog.member.Entity.Member;
 import lombok.Getter;
+import com.example.celog.member.entity.Member;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
