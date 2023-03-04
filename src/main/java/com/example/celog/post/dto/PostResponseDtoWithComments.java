@@ -44,7 +44,7 @@ public class PostResponseDtoWithComments {
     }
 
     public static PostResponseDtoWithComments from(Post post, String nickname) {
-        PostResponseDtoWithComments postResponseDtoWithComments = PostResponseDtoWithComments.builder().id(post.getId()).title(post.getTitle()).contents(post.getContents()).image(post.getImage()).nickname(nickname).createdAt(post.getCreatedAt()).modifiedAt(post.getModifiedAt()).commentList(post.getCommentList()).build();
+        PostResponseDtoWithComments postResponseDtoWithComments = PostResponseDtoWithComments.builder().id(post.getId()).title(post.getTitle()).contents(post.getContents()).image(post.getImage()).nickname(nickname).createdAt(post.getCreatedAt()).modifiedAt(post.getModifiedAt()).commentList(post.getComment()).build();
         return postResponseDtoWithComments;
     }
 }

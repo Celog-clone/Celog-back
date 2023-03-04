@@ -1,7 +1,7 @@
 package com.example.celog.security;
 
-import com.example.celog.member.repository.MemberRepository;
 import com.example.celog.member.Entity.Member;
+import com.example.celog.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,8 +16,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String useremail) throws UsernameNotFoundException {
+
         Member findMember = memberRepository.findByEmail(useremail).orElseThrow(
-                () -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+                ()-> new UsernameNotFoundException("사용자를 찾을 수 없습니다. ")
+        );
         return new UserDetailsImpl(findMember, findMember.getEmail());
     }
 
