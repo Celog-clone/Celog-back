@@ -3,6 +3,7 @@ package com.example.celog.member.controller;
 import com.example.celog.common.SuccessResponse;
 import com.example.celog.member.dto.LoginRequestDto;
 import com.example.celog.member.dto.SignupRequestDto;
+import com.example.celog.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
