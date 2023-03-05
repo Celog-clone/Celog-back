@@ -15,7 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import static com.example.celog.enumclass.ExceptionEnum.*;
+
 
 @Service
 @RequiredArgsConstructor
@@ -27,9 +28,7 @@ public class CommentService {
 
     public ApiResponseDto<CommentResponseDto> saveComment(Long id, CommentRequestDto commentRequestDto, Member member) {
 
-        Post post = postRepository.findById(id).orElseThrow(
-                () -> new NullPointerException("등록된 게시글이 없습니다.")
-        );
+        Post post = foundPost(id);
 
         // 댓글 작성 / 작성된 댓글 db에 저장
         return ResponseUtils.ok(CommentResponseDto.from(commentRepository.save(Comment.of(commentRequestDto, member, post))));
@@ -37,12 +36,9 @@ public class CommentService {
 
     public ApiResponseDto<CommentResponseDto> modifyComment(Long id, Long comment_id, CommentRequestDto commentRequestDto, Member member) {
 
-        postRepository.findById(id).orElseThrow(
-                () -> new NullPointerException("등록된 게시글이 없습니다.")
-        );
+        foundPost(id);
 
-
-        Comment comment = foundMember(comment_id, member);
+        Comment comment = foundMemberAndComment(comment_id, member);
 
         comment.update(commentRequestDto, member);
         commentRepository.flush();
@@ -53,20 +49,26 @@ public class CommentService {
 
     public ApiResponseDto<SuccessResponse> removeComment(Long id, Long comment_id, Member member) {
 
-        foundMember(comment_id, member);
+        foundMemberAndComment(comment_id, member);
 
         commentRepository.deleteById(comment_id);
         return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "댓글 삭제 완료"));
     }
 
-    private Comment foundMember(Long comment_id, Member member) {
+    private Comment foundMemberAndComment(Long comment_id, Member member) {
         Member found = commentRepository.findById(comment_id).get().getMember();
         if (!member.getId().equals(found.getId())) {
-            throw new IllegalArgumentException("자신이 작성한 댓글만 수정/삭제가 가능합니다.");
+            throw new IllegalArgumentException(NOT_MY_CONTENT.getMsg());
         }
 
         return commentRepository.findById(comment_id).orElseThrow(
-                () -> new NullPointerException("댓글이 없습니다.")
+                () -> new NullPointerException(NOT_EXIST_COMMENT.getMsg())
+        );
+    }
+
+    private Post foundPost(Long id) {
+        return postRepository.findById(id).orElseThrow(
+                () -> new NullPointerException(NOT_EXIST_POST.getMsg())
         );
     }
 }
