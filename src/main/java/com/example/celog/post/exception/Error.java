@@ -14,7 +14,7 @@ public enum Error {
 
     NOT_FOUND_MEMBER("400", "로그인이 필요합니다."),
 
-    NOT_FOUND_SEARCH("400", "검색 결과가 업습니다."),
+    NOT_FOUND_SEARCH("400", "검색 결과가 없습니다."),
 
     NO_AUTHORITY_MODIFY("400",  "수정 권한이 없습니다."),
 
