@@ -32,8 +32,7 @@ public class LikeService {
 
         Optional<Like> found = likeRepository.findByPostAndMember(post, userDetails.getMember());
         if (found.isEmpty()) {
-            Like like = Like.of(post, userDetails.getMember());
-            likeRepository.save(like);
+            likeRepository.save(Like.of(post, userDetails.getMember()));
             return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "좋아요 성공"));
         } else {
             likeRepository.delete(found.get());
