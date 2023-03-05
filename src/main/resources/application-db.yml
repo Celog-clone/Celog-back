@@ -50,7 +50,7 @@ spring:
         format_sql: true
 
   datasource:
-    url: jdbc:mysql://celog-1.cl2ran5q1xov.ap-northeast-2.rds.amazonaws.com:3306/celog-test?createDatabaseIfNotExist=true
+    url: jdbc:mysql://celog-test.cl2ran5q1xov.ap-northeast-2.rds.amazonaws.com:3306/celog-test?createDatabaseIfNotExist=true
     hikari:
       driver-class-name: com.mysql.cj.jdbc.Driver
       username: admin
