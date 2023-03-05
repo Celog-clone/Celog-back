@@ -38,29 +38,25 @@ public class Post extends Timestamped{
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = REMOVE)
     private List<Comment> comment = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = REMOVE)
     private List<Like> likeList = new ArrayList<>();
 
-    @Builder    // 매개변수 PostResponseDto 아닌 이유 상훈님께 물어볼것
-    private Post(String title, String contents, String image, Member member) {
-        this.title = title;
-        this.contents = contents;
-        this.image = image;
+    @Builder
+    private Post(PostRequestDto postRequestDto, Member member) {
+        title = postRequestDto.getTitle();
+        contents = postRequestDto.getContents();
+        image = postRequestDto.getImage();
         this.member = member;
     }
 
-        // post객체 만들지 말고 바로 리턴
     public static Post of(PostRequestDto postRequestDto, Member member) {
-        Post post = Post.builder()
-                .title(postRequestDto.getTitle())
-                .contents(postRequestDto.getContents())
-                .image(postRequestDto.getImage())
+        return Post.builder()
+                .postRequestDto(postRequestDto)
                 .member(member)
                 .build();
-        return post;
     }
 
     public void update(String title, String contents, String image) {

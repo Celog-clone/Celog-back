@@ -1,8 +1,11 @@
 package com.example.celog.post.dto;
 
 ;
+import com.example.celog.comment.dto.CommentResponseDto;
 import com.example.celog.comment.entity.Comment;
+import com.example.celog.member.entity.Member;
 import com.example.celog.post.entity.Post;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,29 +28,34 @@ public class PostResponseDtoWithComments {
 
     private String nickname;
 
-    private List<Comment> commentList = new ArrayList<>();
+    private List<CommentResponseDto> commentList = new ArrayList<>();
 
     private Integer likeCount;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime modifiedAt;
 
-    @Builder    // 매개변수 Post 아닌 이유?? 상훈님께 물어볼것
-    private PostResponseDtoWithComments(Long id, String title, String contents, String image, String nickname, Integer likeCount, LocalDateTime createdAt, LocalDateTime modifiedAt, List<Comment> commentList) {
-        this.id = id;
-        this.title = title;
-        this.contents = contents;
-        this.image = image;
-        this.nickname = nickname;
+    @Builder
+    private PostResponseDtoWithComments(Post post, Member member, List<CommentResponseDto> commentList) {
+        id = post.getId();
+        title = post.getTitle();
+        contents = post.getContents();
+        image = post.getImage();
+        nickname = member.getNickname();
         this.commentList = commentList;
-        this.likeCount = likeCount;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
+        likeCount = post.getLikeList() == null ? 0 : post.getLikeList().size();
+        createdAt = post.getCreatedAt();
+        modifiedAt = post.getModifiedAt();
     }
 
-    public static PostResponseDtoWithComments from(Post post, String nickname) {
-        PostResponseDtoWithComments postResponseDtoWithComments = PostResponseDtoWithComments.builder().id(post.getId()).title(post.getTitle()).contents(post.getContents()).image(post.getImage()).nickname(nickname).createdAt(post.getCreatedAt()).modifiedAt(post.getModifiedAt()).commentList(post.getComment()).build();
-        return postResponseDtoWithComments;
+    public static PostResponseDtoWithComments from(Post post, Member member, List<CommentResponseDto> commentList) {
+        return PostResponseDtoWithComments.builder()
+                .post(post)
+                .member(member)
+                .commentList(commentList)
+                .build();
     }
 }
