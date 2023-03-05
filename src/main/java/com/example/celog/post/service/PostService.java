@@ -3,16 +3,18 @@ package com.example.celog.post.service;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.example.celog.comment.dto.CommentResponseDto;
+import com.example.celog.comment.entity.Comment;
 import com.example.celog.common.ApiResponseDto;
 import com.example.celog.common.ResponseUtils;
 import com.example.celog.common.SuccessResponse;
 import com.example.celog.common.s3.FileUtil;
 import com.example.celog.common.s3.Uploader;
+import com.example.celog.member.entity.Member;
 import com.example.celog.member.repository.MemberRepository;
 import com.example.celog.post.dto.PostRequestDto;
 import com.example.celog.post.dto.PostResponseDtoWithComments;
 import com.example.celog.post.dto.PostResponseDto;
-import com.example.celog.member.Entity.Member;
 import com.example.celog.post.entity.FileInfo;
 import com.example.celog.post.entity.Post;
 import com.example.celog.post.exception.CustomException;
@@ -97,7 +99,7 @@ public class PostService {
 
         Post post = Post.of(requestDto, foundMember);
         postRepository.save(post);
-        return ResponseUtils.ok(PostResponseDto.from(post, foundMember.getNickname()));
+        return ResponseUtils.ok(PostResponseDto.from(post, foundMember));
     }
 
     // 게시물 수정
@@ -134,7 +136,7 @@ public class PostService {
         requestDto.setImage(fileInfo.getFileUrl());
 
         post.update(requestDto.getTitle(), requestDto.getContents(), requestDto.getImage());
-        return ResponseUtils.ok(PostResponseDto.from(post, foundMember.getNickname()));
+        return ResponseUtils.ok(PostResponseDto.from(post, foundMember));
     }
 
     // 게시물 삭제
@@ -172,7 +174,7 @@ public class PostService {
         List<PostResponseDto> responseDtoList = new ArrayList<>();
 
         for(Post post : foundPostList)
-            responseDtoList.add(PostResponseDto.from(post, post.getMember().getNickname()));
+            responseDtoList.add(PostResponseDto.from(post, post.getMember()));
 
         return ResponseUtils.ok(responseDtoList);
     }
@@ -185,8 +187,12 @@ public class PostService {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new CustomException(NOT_FOUND_POST)
         );
+        List<CommentResponseDto> list = new ArrayList<>();
+        for(Comment comment : post.getComment()){
+            list.add(CommentResponseDto.from(comment));
+        }
 
-        PostResponseDtoWithComments responseDto = PostResponseDtoWithComments.from(post, post.getMember().getNickname());
+        PostResponseDtoWithComments responseDto = PostResponseDtoWithComments.from(post, post.getMember(), list);
         return ResponseUtils.ok(responseDto);
     }
 
@@ -204,7 +210,7 @@ public class PostService {
         List<PostResponseDto> responseDtoList = new ArrayList<>();
 
         for(Post post : foundPostList)
-            responseDtoList.add(PostResponseDto.from(post, post.getMember().getNickname()));
+            responseDtoList.add(PostResponseDto.from(post, post.getMember()));
         return ResponseUtils.ok(responseDtoList);
     }
 }
