@@ -28,7 +28,7 @@ public class Post extends Timestamped{
     @Column(nullable = false)
     private String contents;
 
-    @Column(nullable = false)
+    @Column()
     private String image;
 
     @ManyToOne
