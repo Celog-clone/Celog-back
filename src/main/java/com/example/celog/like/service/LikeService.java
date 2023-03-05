@@ -40,6 +40,5 @@ public class LikeService {
             likeRepository.flush();
             return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "좋아요 취소"));
         }
-
     }
 }
