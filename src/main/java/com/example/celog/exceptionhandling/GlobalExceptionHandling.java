@@ -7,6 +7,7 @@ import com.example.celog.enumclass.ExceptionEnum;
 import org.springframework.http.HttpStatus;
 
 public class GlobalExceptionHandling {
+
     public static ApiResponseDto<ErrorResponse> responseException(ExceptionEnum exceptionEnum) {
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .status(exceptionEnum.getCode())

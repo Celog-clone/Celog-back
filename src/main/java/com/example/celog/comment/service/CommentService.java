@@ -46,7 +46,6 @@ public class CommentService {
         return ResponseUtils.ok(CommentResponseDto.from(comment));
     }
 
-
     public ApiResponseDto<SuccessResponse> removeComment(Long id, Long comment_id, Member member) {
 
         foundMemberAndComment(comment_id, member);

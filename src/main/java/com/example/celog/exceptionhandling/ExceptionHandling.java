@@ -28,7 +28,6 @@ public class ExceptionHandling {
         return ResponseUtils.error(error);
     }
 
-
     private ErrorResponse errorResponse(BindingResult bindingResult) {
         String message = "";
 
