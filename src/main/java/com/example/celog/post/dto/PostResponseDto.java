@@ -1,6 +1,8 @@
 package com.example.celog.post.dto;
 
+import com.example.celog.member.entity.Member;
 import com.example.celog.post.entity.Post;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,23 +23,27 @@ public class PostResponseDto {
 
     private String nickname;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime modifiedAt;
 
     @Builder
-    private PostResponseDto(Long id, String title, String contents, String image, String nickname, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        this.id = id;
-        this.title = title;
-        this.contents = contents;
-        this.image = image;
-        this.nickname = nickname;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
+    private PostResponseDto(Post post, Member member) {
+        id = post.getId();
+        title = post.getTitle();
+        contents = post.getContents();
+        image = post.getImage();
+        nickname = member.getNickname();
+        createdAt = post.getCreatedAt();
+        modifiedAt = post.getModifiedAt();
     }
 
-    public static PostResponseDto from(Post post, String nickname) {
-        PostResponseDto postResponseDto = PostResponseDto.builder().id(post.getId()).title(post.getTitle()).contents(post.getContents()).image(post.getImage()).nickname(nickname).createdAt(post.getCreatedAt()).modifiedAt(post.getModifiedAt()).build();
-        return postResponseDto;
+    public static PostResponseDto from(Post post, Member member) {
+        return PostResponseDto.builder()
+                .post(post)
+                .member(member)
+                .build();
     }
 }

@@ -15,6 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.Arrays;
 
 @Configuration
 @RequiredArgsConstructor
@@ -32,12 +35,25 @@ public class WebSecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         // h2-console 사용 및 resources 접근 허용 설정
         return (web) -> web.ignoring()
-                .requestMatchers(PathRequest.toH2Console())
+//                .requestMatchers(PathRequest.toH2Console())
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { //  Spring Security 필터 체인을 구성하는 인터페이스다.
+
+        http.cors().configurationSource(request -> {
+            CorsConfiguration cors = new CorsConfiguration();
+
+            cors.setAllowedOriginPatterns(Arrays.asList("*"));
+
+            cors.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS"));
+            cors.setAllowedHeaders(Arrays.asList("*"));
+            cors.addExposedHeader("Authorization");
+            cors.addExposedHeader("Refresh_Token");
+            cors.setAllowCredentials(true);
+            return cors;
+        });
 
         http.csrf().disable(); // CSRF 방어 기능을 비활성화한다.
 

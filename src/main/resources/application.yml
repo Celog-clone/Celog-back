@@ -1,26 +1,45 @@
 spring:
-  datasource:
-    url: jdbc:h2:mem:db;MODE=MySQL
-#    url: jdbc:h2:tcp://localhost/~/celog
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-  h2:
-    console:
-      enabled: true
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
+  profiles:
+    active:
+      - dev # 로컬, 원격 스위칭
+    group: # 그룹 환경 셋팅
+      local:
+        - db-local
+        - common-local
+      dev:
+        - db-dev
+        - common-dev
+    include: # 셋팅 종류
+      - db
+      - common
 
-logging:
-  level:
-    org:
-      hibernate:
-        sql: debug
 jwt:
   secret:
     key: 7ZWt7ZW0OTntmZTsnbTtjIXtlZzqta3snYTrhIjrqLjshLjqs4TroZzrgpjslYTqsIDsnpDtm4zrpa3tlZzqsJzrsJzsnpDrpbzrp4zrk6TslrTqsIDsnpA=
+
+#spring:
+#  datasource:
+##    url: jdbc:h2:mem:db;MODE=MySQL
+#    url: jdbc:h2:tcp://localhost/~/celog
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+#  h2:
+#    console:
+#      enabled: true
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#    properties:
+#      hibernate:
+##        show_sql: true
+##        format_sql: true
+#
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        sql: debug
+#jwt:
+#  secret:
+#    key: 7ZWt7ZW0OTntmZTsnbTtjIXtlZzqta3snYTrhIjrqLjshLjqs4TroZzrgpjslYTqsIDsnpDtm4zrpa3tlZzqsJzrsJzsnpDrpbzrp4zrk6TslrTqsIDsnpA=

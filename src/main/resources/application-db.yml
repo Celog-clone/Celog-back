@@ -1,0 +1,57 @@
+spring:
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc.batch_size: 100
+        default_fetch_size: 100
+        order_inserts: true
+        order_updates: true
+      javax:
+        persistence:
+          sharedCache.mode: ALL
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "db-local"
+
+  h2:
+    console:
+      enabled: false
+
+  jpa:
+    show-sql: true
+    database: MYSQL
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/celog?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: 123123
+---
+spring:
+  config:
+    activate:
+      on-profile: "db-dev"
+
+  jpa:
+    show-sql: true
+    database: MYSQL
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+  datasource:
+    url: jdbc:mysql://celog-test.cl2ran5q1xov.ap-northeast-2.rds.amazonaws.com:3306/celog-test?createDatabaseIfNotExist=true
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: admin
+      password: 123456789
