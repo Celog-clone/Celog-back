@@ -1,7 +1,7 @@
 package com.example.celog.common.s3;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Enumeration;
 
-@Slf4j
 public class FileUtil {
 
     // 파일 이름이 기준 length 보다 길경우 잘라서 리턴 메서드
@@ -25,9 +24,7 @@ public class FileUtil {
 
     // 랜덤 파일 이름 리턴 메서드
     public static String getRandomFileName(String fileName) {
-        log.info(fileName);
         String extension = fileName.substring(fileName.lastIndexOf("."));
-        log.info(extension);
         return RandomStringUtils.randomAlphabetic(5)+ "_" + RandomStringUtils.randomNumeric(5) + "_" +
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + extension;
     }

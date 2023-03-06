@@ -38,6 +38,9 @@ public class Post extends Timestamped{
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Column()
+    private String originalFilename;
+
     @OneToMany(mappedBy = "post", cascade = REMOVE)
     private List<Comment> comment = new ArrayList<>();
 
@@ -49,6 +52,7 @@ public class Post extends Timestamped{
         title = postRequestDto.getTitle();
         contents = postRequestDto.getContents();
         image = postRequestDto.getImage();
+        originalFilename = postRequestDto.getOriginalFileName();
         this.member = member;
     }
 
@@ -59,9 +63,9 @@ public class Post extends Timestamped{
                 .build();
     }
 
-    public void update(String title, String contents, String image) {
-        this.title = title;
-        this.contents = contents;
-        this.image = image;
+    public void update(PostRequestDto requestDto, Member member) {
+        this.title = requestDto.getTitle();
+        this.contents = requestDto.getContents();
+        this.image = requestDto.getImage();
     }
 }
