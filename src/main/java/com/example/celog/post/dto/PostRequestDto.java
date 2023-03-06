@@ -15,21 +15,21 @@ public class PostRequestDto {
 
     private String contents;
 
-    private String image;
+    private String url;
 
     private String originalFileName;
-    private MultipartFile file;
+    private MultipartFile image;
 
     @Builder
-    private PostRequestDto(String title, String contents, String image, String originalFileName) {
+    private PostRequestDto(String title, String contents, String url, String originalFileName) {
         this.title = title;
         this.contents = contents;
-        this.image = image;
+        this.url = url;
         this.originalFileName = originalFileName;
     }
 
-    public static PostRequestDto from(String title, String contents, String image, String originalFileName) {
-        PostRequestDto postRequestDto = PostRequestDto.builder().title(title).contents(contents).image(image).originalFileName(originalFileName).build();
+    public static PostRequestDto from(String title, String contents, String url, String originalFileName) {
+        PostRequestDto postRequestDto = PostRequestDto.builder().title(title).contents(contents).url(url).originalFileName(originalFileName).build();
         return postRequestDto;
     }
 

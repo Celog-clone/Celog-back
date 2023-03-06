@@ -23,7 +23,7 @@ public class MyPageResponseDto {
         id = post.getId();
         title = post.getTitle();
         contents = post.getContents();
-        image = post.getImage();
+        image = post.getUrl();
         likeCount = post.getLikeList() == null ? 0 : post.getLikeList().size();
         createdAt = post.getCreatedAt();
         modifiedAt = post.getModifiedAt();

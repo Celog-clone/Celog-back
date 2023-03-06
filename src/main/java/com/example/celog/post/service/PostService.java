@@ -58,7 +58,7 @@ public class PostService {
         log.info("2");
         String fileUrl = "";
         FileInfo fileInfo;
-        MultipartFile file = requestDto.getFile();
+        MultipartFile file = requestDto.getImage();
 
         if (file.isEmpty()) {
             Post post = postRepository.save(Post.of(requestDto, member));
@@ -68,7 +68,7 @@ public class PostService {
             fileUrl = uploader.upload(file, "testImage");
             fileInfo = new FileInfo(
                     FileUtil.cutFileName(file.getOriginalFilename(), 500), fileUrl);
-            requestDto.setImage(fileInfo.getFileUrl());
+            requestDto.setUrl(fileInfo.getFileUrl());
             requestDto.setOriginalFileName(file.getOriginalFilename());
         } catch (IOException ie) {
             log.info("S3파일 저장 중 예외 발생");
@@ -90,8 +90,8 @@ public class PostService {
     public ApiResponseDto<PostSubResponseDto> modifyPost(PostRequestDto requestDto, Member member, Long id) throws IOException {
 
         String fileUrl = "";
-        FileInfo fileInfo = new FileInfo(requestDto.getOriginalFileName(), requestDto.getImage());
-        MultipartFile file = requestDto.getFile();
+        FileInfo fileInfo = new FileInfo(requestDto.getOriginalFileName(), requestDto.getUrl());
+        MultipartFile file = requestDto.getImage();
         Optional<Post> post = postRepository.findById(id);
 
 
@@ -105,7 +105,7 @@ public class PostService {
             throw new CustomException(NO_AUTHORITY_MODIFY);
 
         // 기존 이미지 삭제
-        FileInfo fileInfo1 = new FileInfo("삭제될 이미지", post.get().getImage());
+        FileInfo fileInfo1 = new FileInfo("삭제될 이미지", post.get().getUrl());
         if (!(fileInfo1.getFileUrl() == null)) {
             uploader.delete(fileInfo1.S3key());
         }
@@ -121,7 +121,7 @@ public class PostService {
         fileInfo = new FileInfo(
                 FileUtil.cutFileName(Objects.requireNonNull(file.getOriginalFilename()), 500), fileUrl);
 
-        requestDto.setImage(fileInfo.getFileUrl());
+        requestDto.setUrl(fileInfo.getFileUrl());
         post.get().update(requestDto, member);
 
         return  ResponseUtils.ok(PostSubResponseDto.from(post.get(), member));
@@ -146,11 +146,11 @@ public class PostService {
 
         Post post = postRepository
                 .findById(id).orElseThrow(() -> new RuntimeException("존재 하지 않는 파일"));
-        if (post.getImage() == null) {
+        if (post.getUrl() == null) {
             postRepository.deleteById(id);
             return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "삭제 성공"));
         }
-        FileInfo fileInfo = new FileInfo(post.getOriginalFilename(), post.getImage());
+        FileInfo fileInfo = new FileInfo(post.getOriginalFilename(), post.getUrl());
         uploader.delete(fileInfo.S3key());
 
         // 게시글 id 와 사용자 정보 일치한다면, 게시글 수정

@@ -32,7 +32,7 @@ public class Post extends Timestamped{
     private String contents;
 
     @Column()
-    private String image;
+    private String url;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
@@ -51,7 +51,7 @@ public class Post extends Timestamped{
     private Post(PostRequestDto postRequestDto, Member member) {
         title = postRequestDto.getTitle();
         contents = postRequestDto.getContents();
-        image = postRequestDto.getImage();
+        url = postRequestDto.getUrl();
         originalFilename = postRequestDto.getOriginalFileName();
         this.member = member;
     }
@@ -66,6 +66,6 @@ public class Post extends Timestamped{
     public void update(PostRequestDto requestDto, Member member) {
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
-        this.image = requestDto.getImage();
+        this.url = requestDto.getUrl();
     }
 }
