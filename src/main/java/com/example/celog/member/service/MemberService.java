@@ -43,6 +43,7 @@ public class MemberService {
                 Member.builder()
                         .password(passwordEncoder.encode(signupRequestDto.getPassword()))
                         .email(signupRequestDto.getEmail())
+                        .nickname(signupRequestDto.getNickname())
                         .build());
 
         return SuccessResponse.of(HttpStatus.OK,"회원가입 성공");

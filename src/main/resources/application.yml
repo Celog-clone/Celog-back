@@ -1,15 +1,15 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/celog?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/mem?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
-    password: 123456789
+    password: 661213bb
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: create
     properties:
       hibernate:
-        # show_sql: true
+  # show_sql: true
         format_sql: true
   mvc:
     pathmatch:
@@ -27,12 +27,12 @@ jwt:
 cloud:
   aws:
     s3:
-      bucket: blush-market
+      bucket: celog123
     credentials:
-      access-key: AKIAT7KMYIXV4MQ5KCPJ
-      secret-key: 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
+      access-key: AKIAZCZBEBWRGAEUB5ES
+      secret-key: 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
     region:
       static: ap-northeast-2
       auto: false
     stack:
-       auto: false
+      auto: false
