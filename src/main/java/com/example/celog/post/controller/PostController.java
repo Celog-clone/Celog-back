@@ -1,6 +1,7 @@
 package com.example.celog.post.controller;
 
 import com.example.celog.common.ApiResponseDto;
+import com.example.celog.post.dto.PostLikeResponseDto;
 import com.example.celog.post.dto.PostRequestDto;
 import com.example.celog.post.dto.PostResponseDto;
 import com.example.celog.post.service.PostService;
@@ -50,7 +51,7 @@ public class PostController {
 
     // 게시물 검색 조회
     @GetMapping("/posts/search")
-    public ApiResponseDto<List<PostResponseDto>> postSearch(@RequestParam String name) {
+    public ApiResponseDto<List<PostLikeResponseDto>> postSearch(@RequestParam String name) {
         return postService.searchPost(name);
     }
 

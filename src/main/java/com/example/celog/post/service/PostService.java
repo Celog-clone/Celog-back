@@ -55,6 +55,7 @@ public class PostService {
     // 게시물 등록
     @Transactional
     public ApiResponseDto<PostAddResponseDto> addPost(PostRequestDto requestDto, Member member) throws IOException {
+
         log.info("2");
         String fileUrl = "";
         FileInfo fileInfo;
@@ -198,7 +199,7 @@ public class PostService {
 
     // 게시물 검색 조회
     @Transactional(readOnly = true)
-    public ApiResponseDto<List<PostResponseDto>> searchPost(String name){
+    public ApiResponseDto<List<PostLikeResponseDto>> searchPost(String name){
         if(name.equals(""))
             throw new CustomException(NOT_FOUND_SEARCH);
 
@@ -206,11 +207,18 @@ public class PostService {
                 () -> new CustomException(NOT_FOUND_SEARCH)
         );
 
+        List<PostLikeResponseDto> responseDtoList = new ArrayList<>();
 
-        List<PostResponseDto> responseDtoList = new ArrayList<>();
+        for(Post post : foundPostList){
+            List<Like> likeCount = likeRepository.findByPost(post).orElseThrow(
+                    () -> new CustomException(NOT_FOUND_POST)
+            );
+            responseDtoList.add(PostLikeResponseDto.from(post, post.getMember(), likeCount.size()));
+        }
+
 
         for(Post post : foundPostList)
-            responseDtoList.add(PostResponseDto.from(post, post.getMember(), post.getComment().size()));
+            responseDtoList.add(PostLikeResponseDto.from(post, post.getMember(), post.getComment().size()));
         return ResponseUtils.ok(responseDtoList);
     }
 }
