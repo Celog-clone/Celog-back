@@ -41,7 +41,6 @@ public class MemberService {
 
         memberRepository.save(
                 Member.builder()
-                        .nickname(signupRequestDto.getNickname())
                         .password(passwordEncoder.encode(signupRequestDto.getPassword()))
                         .email(signupRequestDto.getEmail())
                         .build());
@@ -57,8 +56,8 @@ public class MemberService {
         String email = requestDto.getEmail();
         String password = requestDto.getPassword();
 
-        Optional<Member> findMemeber = memberRepository.findByEmail(email);
-        if(findMemeber.isEmpty() || !passwordEncoder.matches(password,findMemeber.get().getPassword())){
+        Optional<Member> findMember = memberRepository.findByEmail(email);
+        if(findMember.isEmpty() || !passwordEncoder.matches(password,findMember.get().getPassword())){
             throw new NullPointerException("회원이 없습니다.");
         }
 

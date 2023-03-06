@@ -38,17 +38,21 @@ public class Post extends Timestamped{
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "post", cascade = REMOVE)
-    private List<Comment> comment = new ArrayList<>();
+    @Column()
+    private String originalFilename;
 
     @OneToMany(mappedBy = "post", cascade = REMOVE)
-    private List<Like> likeList = new ArrayList<>();
+    private final List<Comment> comment = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = REMOVE)
+    private final List<Like> likeList = new ArrayList<>();
 
     @Builder
     private Post(PostRequestDto postRequestDto, Member member) {
         title = postRequestDto.getTitle();
         contents = postRequestDto.getContents();
         image = postRequestDto.getImage();
+        originalFilename = postRequestDto.getOriginalFileName();
         this.member = member;
     }
 
@@ -59,9 +63,9 @@ public class Post extends Timestamped{
                 .build();
     }
 
-    public void update(String title, String contents, String image) {
-        this.title = title;
-        this.contents = contents;
-        this.image = image;
+    public void update(PostRequestDto requestDto, Member member) {
+        this.title = requestDto.getTitle();
+        this.contents = requestDto.getContents();
+        this.image = requestDto.getImage();
     }
 }

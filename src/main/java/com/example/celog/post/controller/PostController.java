@@ -20,14 +20,14 @@ public class PostController {
 
     // 게시물 등록
     @PostMapping("/posts")
-    public ApiResponseDto postAdd(@AuthenticationPrincipal UserDetailsImpl userDetails, @ModelAttribute PostRequestDto requestDto) {
-        return postService.addPost(requestDto, userDetails.getMember().getId());
+    public ApiResponseDto postAdd(@AuthenticationPrincipal UserDetailsImpl userDetails, @ModelAttribute PostRequestDto requestDto) throws IOException {
+        return postService.addPost(requestDto,userDetails.getUser());
     }
 
     // 게시물 수정
     @PatchMapping("/posts/{id}")
     public ApiResponseDto postModify(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long id, @ModelAttribute PostRequestDto requestDto) throws IOException {
-        return postService.modifyPost(requestDto, userDetails.getMember().getId(), id);
+        return postService.modifyPost(requestDto, userDetails.getMember(), id);
     }
 
     // 게시물 전체 조회
@@ -45,7 +45,7 @@ public class PostController {
     // 게시물 삭제
     @DeleteMapping("/posts/{id}")
     public ApiResponseDto postDelete(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long id) {
-        return postService.deletePost(userDetails.getMember().getId(), id);
+        return postService.deletePost(userDetails.getMember(), id);
     }
 
     // 게시물 검색 조회

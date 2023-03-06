@@ -1,7 +1,7 @@
 package com.example.celog.common.s3;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Enumeration;
 
-@Slf4j
 public class FileUtil {
 
     // 파일 이름이 기준 length 보다 길경우 잘라서 리턴 메서드
@@ -25,9 +24,7 @@ public class FileUtil {
 
     // 랜덤 파일 이름 리턴 메서드
     public static String getRandomFileName(String fileName) {
-        log.info(fileName);
         String extension = fileName.substring(fileName.lastIndexOf("."));
-        log.info(extension);
         return RandomStringUtils.randomAlphabetic(5)+ "_" + RandomStringUtils.randomNumeric(5) + "_" +
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + extension;
     }
@@ -45,7 +42,7 @@ public class FileUtil {
 
         String docName = "";
         if (browser.contains("Trident") || browser.contains("MSIE") || browser.contains("Edge")) {
-            docName = FileUtil.mappingSpecialCharacter(URLEncoder.encode(fileName, "UTF-8"));
+            docName = FileUtil.mappingSpecialCharacter(URLEncoder.encode(fileName, StandardCharsets.UTF_8));
 
         } else if (browser.contains("Firefox")) {
             docName = new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
@@ -69,20 +66,16 @@ public class FileUtil {
 
         // 파일명에 사용되는 특수문자
         char[] sh_list = { '~', '!', '@', '#', '$', '%', '&', '(', ')', '=', ';', '[', ']', '{', '}', '^', '-' };
-        try {
-            for (char sh : sh_list) {
-                String encodeStr = URLEncoder.encode(sh + "", "UTF-8");
-                name = name.replaceAll(encodeStr, "\\" + sh);
-            }
-
-            // 띄워쓰기 -> + 치환
-            name = name.replaceAll("%2B", "+");
-            // 콤마 -> _ 치환
-            name = name.replaceAll("%2C", "_");
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        for (char sh : sh_list) {
+            String encodeStr = URLEncoder.encode(sh + "", StandardCharsets.UTF_8);
+            name = name.replaceAll(encodeStr, "\\" + sh);
         }
+
+        // 띄워쓰기 -> + 치환
+        name = name.replaceAll("%2B", "+");
+        // 콤마 -> _ 치환
+        name = name.replaceAll("%2C", "_");
+
         return name;
     }
 }

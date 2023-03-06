@@ -35,7 +35,6 @@ public class PostResponseDto {
         title = post.getTitle();
         contents = post.getContents();
         image = post.getImage();
-        nickname = member.getNickname();
         createdAt = post.getCreatedAt();
         modifiedAt = post.getModifiedAt();
     }
