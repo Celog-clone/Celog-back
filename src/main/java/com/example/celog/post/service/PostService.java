@@ -1,8 +1,6 @@
 package com.example.celog.post.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.celog.comment.dto.CommentResponseDto;
 import com.example.celog.comment.entity.Comment;
 import com.example.celog.common.ApiResponseDto;
@@ -10,35 +8,28 @@ import com.example.celog.common.ResponseUtils;
 import com.example.celog.common.SuccessResponse;
 import com.example.celog.common.s3.FileUtil;
 import com.example.celog.common.s3.Uploader;
-import com.example.celog.enumclass.ExceptionEnum;
 import com.example.celog.member.entity.Member;
 import com.example.celog.member.repository.MemberRepository;
 import com.example.celog.post.dto.PostRequestDto;
-import com.example.celog.post.dto.PostResponseDtoWithComments;
 import com.example.celog.post.dto.PostResponseDto;
+import com.example.celog.post.dto.PostResponseDtoWithComments;
 import com.example.celog.post.entity.FileInfo;
 import com.example.celog.post.entity.Post;
 import com.example.celog.post.exception.CustomException;
 import com.example.celog.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Value;
-
 
 import static com.example.celog.post.exception.Error.*;
 
