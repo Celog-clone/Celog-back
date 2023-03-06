@@ -5,6 +5,8 @@ import com.amazonaws.services.s3.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,11 +27,7 @@ public class S3Uploader implements Uploader{
 
     @Override
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {
-        log.info(multipartFile.getName());
-        log.info(dirName);
-        File uploadFile = convert(multipartFile)
-                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File 전환 실패"));
-        log.info(String.valueOf(uploadFile));
+        File uploadFile = convert(multipartFile);
         return upload(uploadFile, dirName);
     }
 
@@ -38,7 +36,15 @@ public class S3Uploader implements Uploader{
         amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, key));
     }
 
+    @Override
+    public Resource downloadResource(String key) {
+        S3Object object = amazonS3Client.getObject(bucket, key);
+        S3ObjectInputStream objectContent = object.getObjectContent();
+        return new InputStreamResource(objectContent);
+    }
+
     private String upload(File uploadFile, String dirName) {
+        log.info(dirName);
         String fileName = dirName + "/" + FileUtil.getRandomFileName(uploadFile.getName());
         log.info(fileName);
         String uploadImageUrl = putS3(uploadFile, fileName);
@@ -61,19 +67,26 @@ public class S3Uploader implements Uploader{
         }
     }
 
-    private Optional<File> convert(MultipartFile file) throws IOException {
-        log.info("11111111111111111111111111111111111111111111111111111");
-        log.info(file.getOriginalFilename());
-        File convertFile = new File(file.getOriginalFilename());
-        log.info("제발 되라");
-        if(convertFile.createNewFile()) {
-            log.info("88888888888");
-            try (FileOutputStream fos = new FileOutputStream(convertFile)) {
-                fos.write(file.getBytes());
-            }
-            return Optional.of(convertFile);
-        }
+//    private Optional<File> convert(MultipartFile file) throws IOException {
+//        File convertFile = new File(file.getOriginalFilename());
+//        if(convertFile.createNewFile()) {
+//            try (FileOutputStream fos = new FileOutputStream(convertFile)) {
+//                fos.write(file.getBytes());
+//            }
+//            return Optional.of(convertFile);
+//        }
+//
+//        return Optional.empty();
+//    }
+    public static File convert(MultipartFile file) throws IOException {
 
-        return Optional.empty();
+        File convFile = new File(file.getOriginalFilename());
+        convFile.createNewFile();
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(file.getBytes());
+        fos.close();
+
+        return convFile;
+
     }
 }
