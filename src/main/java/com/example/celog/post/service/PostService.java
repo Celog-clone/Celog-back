@@ -8,11 +8,11 @@ import com.example.celog.common.ResponseUtils;
 import com.example.celog.common.SuccessResponse;
 import com.example.celog.common.s3.FileUtil;
 import com.example.celog.common.s3.Uploader;
+import com.example.celog.like.entity.Like;
+import com.example.celog.like.repository.LikeRepository;
 import com.example.celog.member.entity.Member;
 import com.example.celog.member.repository.MemberRepository;
-import com.example.celog.post.dto.PostRequestDto;
-import com.example.celog.post.dto.PostResponseDto;
-import com.example.celog.post.dto.PostResponseDtoWithComments;
+import com.example.celog.post.dto.*;
 import com.example.celog.post.entity.FileInfo;
 import com.example.celog.post.entity.Post;
 import com.example.celog.post.exception.CustomException;
@@ -43,6 +43,8 @@ public class PostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
 
+    private final LikeRepository likeRepository;
+
     private final Uploader uploader;
 
     private final AmazonS3Client amazonS3Client;
@@ -52,7 +54,7 @@ public class PostService {
 
     // 게시물 등록
     @Transactional
-    public ApiResponseDto<PostResponseDto> addPost(PostRequestDto requestDto, Member member) throws IOException {
+    public ApiResponseDto<PostAddResponseDto> addPost(PostRequestDto requestDto, Member member) throws IOException {
         log.info("2");
         String fileUrl = "";
         FileInfo fileInfo;
@@ -60,7 +62,7 @@ public class PostService {
 
         if (file.isEmpty()) {
             Post post = postRepository.save(Post.of(requestDto, member));
-            return ResponseUtils.ok(PostResponseDto.from(post, member));
+            return ResponseUtils.ok(PostAddResponseDto.from(post, member));
         }
         try {
             fileUrl = uploader.upload(file, "testImage");
@@ -79,13 +81,13 @@ public class PostService {
         }
 
         Post post = postRepository.save(Post.of(requestDto, member));
-        return ResponseUtils.ok(PostResponseDto.from(post, member));
+        return ResponseUtils.ok(PostAddResponseDto.from(post, member));
     }
 
 
     // 게시물 수정
     @Transactional
-    public ApiResponseDto<PostResponseDto> modifyPost(PostRequestDto requestDto, Member member, Long id) throws IOException {
+    public ApiResponseDto<PostSubResponseDto> modifyPost(PostRequestDto requestDto, Member member, Long id) throws IOException {
 
         String fileUrl = "";
         FileInfo fileInfo = new FileInfo(requestDto.getOriginalFileName(), requestDto.getImage());
@@ -111,7 +113,7 @@ public class PostService {
         //이미지 비어있을시
         if (file.isEmpty()) {
             post.get().update(requestDto, member);
-            return ResponseUtils.ok(PostResponseDto.from(post.get(), member));
+            return ResponseUtils.ok(PostSubResponseDto.from(post.get(), member));
         }
         // 게시글 id 와 사용자 정보 일치한다면, 게시글 수정
 
@@ -122,7 +124,7 @@ public class PostService {
         requestDto.setImage(fileInfo.getFileUrl());
         post.get().update(requestDto, member);
 
-        return  ResponseUtils.ok(PostResponseDto.from(post.get(), member));
+        return  ResponseUtils.ok(PostSubResponseDto.from(post.get(), member));
 
     }
 
@@ -165,8 +167,14 @@ public class PostService {
 
         List<PostResponseDto> responseDtoList = new ArrayList<>();
 
-        for(Post post : foundPostList)
-            responseDtoList.add(PostResponseDto.from(post, post.getMember()));
+
+
+        for(Post post : foundPostList){
+            List<Like> likeCount = likeRepository.findByPost(post).orElseThrow(
+                    () -> new CustomException(NOT_FOUND_POST)
+            );
+            responseDtoList.add(PostResponseDto.from(post, post.getMember(), likeCount.size()));
+        }
 
         return ResponseUtils.ok(responseDtoList);
     }
@@ -202,7 +210,7 @@ public class PostService {
         List<PostResponseDto> responseDtoList = new ArrayList<>();
 
         for(Post post : foundPostList)
-            responseDtoList.add(PostResponseDto.from(post, post.getMember()));
+            responseDtoList.add(PostResponseDto.from(post, post.getMember(), post.getComment().size()));
         return ResponseUtils.ok(responseDtoList);
     }
 }
