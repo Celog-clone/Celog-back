@@ -1,4 +1,4 @@
-package com.example.celog.member.entity;
+package com.example.celog.member.Entity;
 
 
 import lombok.Builder;

@@ -2,8 +2,7 @@ package com.example.celog.post.dto;
 
 ;
 import com.example.celog.comment.dto.CommentResponseDto;
-import com.example.celog.comment.entity.Comment;
-import com.example.celog.member.entity.Member;
+import com.example.celog.member.Entity.Member;
 import com.example.celog.post.entity.Post;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;

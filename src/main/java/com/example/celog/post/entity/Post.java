@@ -2,7 +2,7 @@ package com.example.celog.post.entity;
 
 import com.example.celog.comment.entity.Comment;
 import com.example.celog.like.entity.Like;
-import com.example.celog.member.entity.Member;
+import com.example.celog.member.Entity.Member;
 import com.example.celog.post.dto.PostRequestDto;
 import com.example.celog.superclass.Timestamped;
 import lombok.AccessLevel;

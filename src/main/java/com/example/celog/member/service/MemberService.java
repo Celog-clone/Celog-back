@@ -7,7 +7,7 @@ import com.example.celog.jwt.RefreshTokenRepository;
 import com.example.celog.jwt.TokenDto;
 import com.example.celog.member.dto.LoginRequestDto;
 import com.example.celog.member.dto.SignupRequestDto;
-import com.example.celog.member.entity.Member;
+import com.example.celog.member.Entity.Member;
 import com.example.celog.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

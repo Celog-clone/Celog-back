@@ -1,6 +1,6 @@
 package com.example.celog.mypage.dto;
 
-import com.example.celog.member.entity.Member;
+import com.example.celog.member.Entity.Member;
 import com.example.celog.post.entity.Post;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.example.celog.security;
 
 import com.example.celog.member.repository.MemberRepository;
-import com.example.celog.member.entity.Member;
+import com.example.celog.member.Entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

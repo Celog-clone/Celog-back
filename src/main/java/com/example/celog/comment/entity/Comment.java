@@ -1,7 +1,7 @@
 package com.example.celog.comment.entity;
 
 import com.example.celog.comment.dto.CommentRequestDto;
-import com.example.celog.member.entity.Member;
+import com.example.celog.member.Entity.Member;
 import com.example.celog.post.entity.Post;
 import com.example.celog.superclass.Timestamped;
 import lombok.AccessLevel;
