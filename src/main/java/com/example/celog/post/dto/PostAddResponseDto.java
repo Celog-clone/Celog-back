@@ -34,7 +34,7 @@ public class PostAddResponseDto {
         id = post.getId();
         title = post.getTitle();
         contents = post.getContents();
-        image = post.getImage();
+        image = post.getUrl();
         nickname = member.getNickname();
         createdAt = post.getCreatedAt();
         modifiedAt = post.getModifiedAt();

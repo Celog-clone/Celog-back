@@ -41,7 +41,7 @@ public class PostResponseDtoWithComments {
         id = post.getId();
         title = post.getTitle();
         contents = post.getContents();
-        image = post.getImage();
+        image = post.getUrl();
         nickname = member.getNickname();
         likeCount = post.getLikeList() == null ? 0 : post.getLikeList().size();
         createdAt = post.getCreatedAt();
