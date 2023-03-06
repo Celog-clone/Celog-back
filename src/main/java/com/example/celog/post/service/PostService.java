@@ -162,7 +162,7 @@ public class PostService {
 
         // 게시글 id 와 사용자 정보 일치한다면, 게시글 수정
         postRepository.deleteById(id);
-
+        log.info("1");
         return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "삭제 성공"));
     }
 
