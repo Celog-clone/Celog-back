@@ -1,4 +1,4 @@
-package com.example.celog.member.Entity;
+package com.example.celog.member.entity;
 
 
 import lombok.Builder;
@@ -17,7 +17,6 @@ public class Member {
 
     @Column(nullable = false)
     private String nickname;
-
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)
@@ -26,9 +25,9 @@ public class Member {
 
 
     @Builder
-    public Member(String nickname, String password, String email) {
-        this.nickname = nickname;
+    public Member(String password, String nickname, String email) {
         this.password = password;
+        this.nickname = nickname;
         this.email = email;
 
     }

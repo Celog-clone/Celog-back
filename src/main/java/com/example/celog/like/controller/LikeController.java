@@ -1,7 +1,7 @@
 package com.example.celog.like.controller;
 
 import com.example.celog.common.ApiResponseDto;
-import com.example.celog.like.dto.LikeResponseDto;
+import com.example.celog.common.SuccessResponse;
 import com.example.celog.like.service.LikeService;
 import com.example.celog.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class LikeController {
     private final LikeService likeService;
 
     @PostMapping("/posts/{id}/like")
-    public ApiResponseDto<LikeResponseDto> likeSave(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ApiResponseDto<SuccessResponse> likeSave(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return likeService.saveLike(id, userDetails.getUser());
     }
 

@@ -1,8 +1,7 @@
 package com.example.celog.post.dto;
 
-;
 import com.example.celog.comment.dto.CommentResponseDto;
-import com.example.celog.member.Entity.Member;
+import com.example.celog.member.entity.Member;
 import com.example.celog.post.entity.Post;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
@@ -44,10 +43,10 @@ public class PostResponseDtoWithComments {
         contents = post.getContents();
         image = post.getImage();
         nickname = member.getNickname();
-        this.commentList = commentList;
         likeCount = post.getLikeList() == null ? 0 : post.getLikeList().size();
         createdAt = post.getCreatedAt();
         modifiedAt = post.getModifiedAt();
+        this.commentList = commentList;
     }
 
     public static PostResponseDtoWithComments from(Post post, Member member, List<CommentResponseDto> commentList) {

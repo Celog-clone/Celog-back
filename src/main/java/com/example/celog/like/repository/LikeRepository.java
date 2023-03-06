@@ -1,7 +1,7 @@
 package com.example.celog.like.repository;
 
 import com.example.celog.like.entity.Like;
-import com.example.celog.member.Entity.Member;
+import com.example.celog.member.entity.Member;
 import com.example.celog.post.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 

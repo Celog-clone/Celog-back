@@ -1,6 +1,6 @@
 package com.example.celog.post.dto;
 
-import com.example.celog.member.Entity.Member;
+import com.example.celog.member.entity.Member;
 import com.example.celog.post.entity.Post;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
@@ -35,7 +35,6 @@ public class PostResponseDto {
         title = post.getTitle();
         contents = post.getContents();
         image = post.getImage();
-        nickname = member.getNickname();
         createdAt = post.getCreatedAt();
         modifiedAt = post.getModifiedAt();
     }

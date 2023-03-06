@@ -45,7 +45,7 @@ public class FileUtil {
 
         String docName = "";
         if (browser.contains("Trident") || browser.contains("MSIE") || browser.contains("Edge")) {
-            docName = FileUtil.mappingSpecialCharacter(URLEncoder.encode(fileName, "UTF-8"));
+            docName = FileUtil.mappingSpecialCharacter(URLEncoder.encode(fileName, StandardCharsets.UTF_8));
 
         } else if (browser.contains("Firefox")) {
             docName = new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
@@ -69,20 +69,16 @@ public class FileUtil {
 
         // 파일명에 사용되는 특수문자
         char[] sh_list = { '~', '!', '@', '#', '$', '%', '&', '(', ')', '=', ';', '[', ']', '{', '}', '^', '-' };
-        try {
-            for (char sh : sh_list) {
-                String encodeStr = URLEncoder.encode(sh + "", "UTF-8");
-                name = name.replaceAll(encodeStr, "\\" + sh);
-            }
-
-            // 띄워쓰기 -> + 치환
-            name = name.replaceAll("%2B", "+");
-            // 콤마 -> _ 치환
-            name = name.replaceAll("%2C", "_");
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        for (char sh : sh_list) {
+            String encodeStr = URLEncoder.encode(sh + "", StandardCharsets.UTF_8);
+            name = name.replaceAll(encodeStr, "\\" + sh);
         }
+
+        // 띄워쓰기 -> + 치환
+        name = name.replaceAll("%2B", "+");
+        // 콤마 -> _ 치환
+        name = name.replaceAll("%2C", "_");
+
         return name;
     }
 }

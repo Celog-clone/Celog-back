@@ -1,6 +1,6 @@
 package com.example.celog.like.entity;
 
-import com.example.celog.member.Entity.Member;
+import com.example.celog.member.entity.Member;
 import com.example.celog.post.entity.Post;
 import lombok.AccessLevel;
 import lombok.Builder;

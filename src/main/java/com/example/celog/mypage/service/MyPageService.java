@@ -2,7 +2,7 @@ package com.example.celog.mypage.service;
 
 import com.example.celog.common.ApiResponseDto;
 import com.example.celog.common.ResponseUtils;
-import com.example.celog.member.Entity.Member;
+import com.example.celog.member.entity.Member;
 import com.example.celog.mypage.dto.MyPageResponseDto;
 import com.example.celog.post.entity.Post;
 import com.example.celog.post.repository.PostRepository;

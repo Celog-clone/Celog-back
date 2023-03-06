@@ -10,7 +10,7 @@ import com.example.celog.common.ResponseUtils;
 import com.example.celog.common.SuccessResponse;
 import com.example.celog.common.s3.FileUtil;
 import com.example.celog.common.s3.Uploader;
-import com.example.celog.member.Entity.Member;
+import com.example.celog.member.entity.Member;
 import com.example.celog.member.repository.MemberRepository;
 import com.example.celog.post.dto.PostRequestDto;
 import com.example.celog.post.dto.PostResponseDtoWithComments;
