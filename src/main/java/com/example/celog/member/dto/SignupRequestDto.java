@@ -8,7 +8,6 @@ import javax.validation.constraints.Pattern;
 public class SignupRequestDto {
     private String nickname;
 
-
     private String password;
 
 
