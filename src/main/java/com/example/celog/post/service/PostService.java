@@ -62,7 +62,7 @@ public class PostService {
     // 게시물 등록
     @Transactional
     public ApiResponseDto<PostResponseDto> addPost(PostRequestDto requestDto, Member member) throws IOException {
-
+        log.info("2");
         String fileUrl = "";
         FileInfo fileInfo;
         MultipartFile file = requestDto.getFile();
