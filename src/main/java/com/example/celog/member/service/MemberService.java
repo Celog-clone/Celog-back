@@ -1,5 +1,8 @@
 package com.example.celog.member.service;
 
+import com.example.celog.common.ApiResponseDto;
+import com.example.celog.common.ResponseUtils;
+import com.example.celog.common.SuccessLoginResponse;
 import com.example.celog.common.SuccessResponse;
 import com.example.celog.jwt.JwtUtil;
 import com.example.celog.jwt.RefreshToken;
@@ -37,7 +40,7 @@ public class MemberService {
      * 회원가입 기능
     * */
     @Transactional
-    public SuccessResponse signup(SignupRequestDto signupRequestDto) {
+    public ApiResponseDto signup(SignupRequestDto signupRequestDto) {
 
         memberRepository.save(
                 Member.builder()
@@ -46,14 +49,14 @@ public class MemberService {
                         .nickname(signupRequestDto.getNickname())
                         .build());
 
-        return SuccessResponse.of(HttpStatus.OK,"회원가입 성공");
+        return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"회원가입 성공"));
     }
 
     /**
      * 로그인 기능
      */
     @Transactional
-    public SuccessResponse login(LoginRequestDto requestDto, HttpServletResponse response) {
+    public ApiResponseDto login(LoginRequestDto requestDto, HttpServletResponse response) {
         String email = requestDto.getEmail();
         String password = requestDto.getPassword();
 
@@ -76,16 +79,17 @@ public class MemberService {
         jwtUtil.setHeader(response, tokenDto);
 
 
-        return SuccessResponse.of(HttpStatus.OK,"로그인 성공");
+        return ResponseUtils.ok(SuccessLoginResponse.of(HttpStatus.OK,"로그인 성공", findMember.get().getNickname()));
     }
 
 
     @Transactional
-    public void memberCheck(String email) throws IllegalAccessException {
+    public ApiResponseDto memberCheck(String email) throws IllegalAccessException {
         Optional<Member> findMember = memberRepository.findByEmail(email);
         if(findMember.isPresent()){
             throw new IllegalAccessException("중복회원 입니다.");
         }
+        return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "사용 가능한 계정입니다."));
     }
 
     /**
