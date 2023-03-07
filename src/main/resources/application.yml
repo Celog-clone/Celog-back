@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/mem?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/celog?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
-    password: 661213bb
+    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -29,8 +29,8 @@ cloud:
     s3:
       bucket: celog123
     credentials:
-      access-key:
-      secret-key:
+      access-key: AKIAZCZBEBWRPCLY3LNI
+      secret-key: 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
     region:
       static: ap-northeast-2
       auto: false

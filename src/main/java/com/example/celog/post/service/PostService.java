@@ -16,6 +16,7 @@ import com.example.celog.post.dto.*;
 import com.example.celog.post.entity.FileInfo;
 import com.example.celog.post.entity.Post;
 import com.example.celog.post.exception.CustomException;
+import com.example.celog.post.exception.Error;
 import com.example.celog.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,14 +55,13 @@ public class PostService {
 
     // 게시물 등록
     @Transactional
-    public ApiResponseDto<PostAddResponseDto> addPost(PostRequestDto requestDto, Member member) throws IOException {
+    public ApiResponseDto<PostAddResponseDto> addPost(PostRequestDto requestDto, Member member){
 
-        log.info("2");
         String fileUrl = "";
         FileInfo fileInfo;
         MultipartFile file = requestDto.getImage();
 
-        if (file.isEmpty()) {
+        if (file.isEmpty()||file == null) {
             Post post = postRepository.save(Post.of(requestDto, member));
             return ResponseUtils.ok(PostAddResponseDto.from(post, member));
         }
@@ -73,12 +73,12 @@ public class PostService {
             requestDto.setOriginalFileName(file.getOriginalFilename());
         } catch (IOException ie) {
             log.info("S3파일 저장 중 예외 발생");
-            throw ie;
+            throw new CustomException(FAIL_S3_SAVE);
 
         } catch (Exception e) {
             log.info("s3에 저장되었던 파일 삭제");
             uploader.delete(fileUrl.substring(fileUrl.lastIndexOf(".com/") + 5));
-            throw e;
+            throw new CustomException(DELETE_S3_FILE);
         }
 
         Post post = postRepository.save(Post.of(requestDto, member));

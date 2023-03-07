@@ -33,6 +33,8 @@ public enum Error {
     INVALID_AUTHORIZED( "401", "사용자 미인증"),
 
     WRONG_LIKE_REQUEST("400", "잘못된 값을 요청하였습니다."),
+    FAIL_S3_SAVE("400", "S3파일 저장 중 예외 발생"),
+    DELETE_S3_FILE("400","s3에 저장되었던 파일 삭제"),
 
 
 
