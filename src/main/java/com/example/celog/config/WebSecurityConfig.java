@@ -48,7 +48,7 @@ public class WebSecurityConfig {
 
             cors.setAllowedOriginPatterns(List.of("*"));
 
-            cors.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS"));
+            cors.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
             cors.setAllowedHeaders(List.of("*"));
             cors.addExposedHeader("Authorization");
             cors.addExposedHeader("Refresh_Token");

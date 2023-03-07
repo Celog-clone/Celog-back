@@ -8,6 +8,7 @@ import com.example.celog.post.entity.Post;
 import com.example.celog.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,9 @@ public class MyPageService {
 
     private final PostRepository postRepository;
 
+    @Transactional(readOnly = true)
     public ApiResponseDto<List<MyPageResponseDto>> findMyPostList(Member member) {
+
         List<Post> postList = postRepository.findAllByMemberId(member.getId()).get();
         List<MyPageResponseDto> myPageResponseDtoList = new ArrayList<>();
         for (Post post : postList) {

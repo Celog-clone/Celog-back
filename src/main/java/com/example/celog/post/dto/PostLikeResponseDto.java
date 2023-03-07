@@ -24,6 +24,8 @@ public class PostLikeResponseDto {
 
     private int likeCount;
 
+    private Integer commentsCount;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
@@ -37,6 +39,7 @@ public class PostLikeResponseDto {
         contents = post.getContents();
         image = post.getUrl();
         nickname = member.getNickname();
+        commentsCount = post.getComment() == null ? 0 : post.getComment().size();
         this.likeCount = likeCount;
         createdAt = post.getCreatedAt();
         modifiedAt = post.getModifiedAt();

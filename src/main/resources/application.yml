@@ -1,38 +1,18 @@
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/celog?serverTimezone=UTC&characterEncoding=UTF-8
-    username: root
-    password: 123456
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-  # show_sql: true
-        format_sql: true
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
-
-logging.level:
-  org.hibernate.SQL: debug
-# org.hibernate.type: trace
-
+  profiles:
+    active:
+      - dev
+    group:
+      local:
+        - db-local
+        - common-local
+      dev:
+        - db-dev
+        - common-dev
+    include:
+      - db
+      - common
 
 jwt:
   secret:
     key: 7ZWt7ZW0OTntmZTsnbTtjIXtlZzqta3snYTrhIjrqLjshLjqs4TroZzrgpjslYTqsIDsnpDtm4zrpa3tlZzqsJzrsJzsnpDrpbzrp4zrk6TslrTqsIDsnpA
-
-cloud:
-  aws:
-    s3:
-      bucket: celog123
-    credentials:
-      access-key: AKIAZCZBEBWRPCLY3LNI
-      secret-key: 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
-    region:
-      static: ap-northeast-2
-      auto: false
-    stack:
-      auto: false
