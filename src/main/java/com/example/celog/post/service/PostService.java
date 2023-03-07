@@ -1,6 +1,5 @@
 package com.example.celog.post.service;
 
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.example.celog.comment.dto.CommentResponseDto;
 import com.example.celog.comment.entity.Comment;
 import com.example.celog.common.ApiResponseDto;
@@ -16,11 +15,9 @@ import com.example.celog.post.dto.*;
 import com.example.celog.post.entity.FileInfo;
 import com.example.celog.post.entity.Post;
 import com.example.celog.post.exception.CustomException;
-import com.example.celog.post.exception.Error;
 import com.example.celog.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,10 +45,6 @@ public class PostService {
 
     private final Uploader uploader;
 
-    private final AmazonS3Client amazonS3Client;
-
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
 
     // 게시물 등록
     @Transactional
