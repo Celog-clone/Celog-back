@@ -12,6 +12,8 @@ import com.example.celog.member.dto.LoginRequestDto;
 import com.example.celog.member.dto.SignupRequestDto;
 import com.example.celog.member.entity.Member;
 import com.example.celog.member.repository.MemberRepository;
+import com.example.celog.post.exception.CustomException;
+import com.example.celog.post.exception.Error;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -41,7 +43,7 @@ public class MemberService {
     * */
     @Transactional
     public ApiResponseDto signup(SignupRequestDto signupRequestDto) {
-
+        memberCheck(signupRequestDto.getEmail());
         memberRepository.save(
                 Member.builder()
                         .password(passwordEncoder.encode(signupRequestDto.getPassword()))
@@ -84,10 +86,10 @@ public class MemberService {
 
 
     @Transactional
-    public ApiResponseDto memberCheck(String email) throws IllegalAccessException {
+    public ApiResponseDto memberCheck(String email)  {
         Optional<Member> findMember = memberRepository.findByEmail(email);
         if(findMember.isPresent()){
-            throw new IllegalAccessException("중복회원 입니다.");
+            throw new CustomException(Error.DUPLICATED_EMAIL);
         }
         return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "사용 가능한 계정입니다."));
     }
@@ -95,10 +97,10 @@ public class MemberService {
     /**
      * 토큰 갱신
      **/
-    public SuccessResponse issueToken(HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException {
+    public SuccessResponse issueToken(HttpServletRequest request, HttpServletResponse response) {
         String refreshToken = jwtUtil.resolveToken(request, "Refresh");
         if(!jwtUtil.refreshTokenValidation(refreshToken)){
-            throw new IllegalAccessException("토큰이 유효하지 않습니다.");
+            throw new CustomException(Error.WRONG_TOKEN);
         }
 
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(jwtUtil.getUserId(refreshToken), "Access"));
