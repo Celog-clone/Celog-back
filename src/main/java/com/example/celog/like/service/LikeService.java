@@ -19,12 +19,12 @@ import static com.example.celog.enumclass.ExceptionEnum.NOT_EXIST_POST;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class LikeService {
 
     private final LikeRepository likeRepository;
     private final PostRepository postRepository;
 
+    @Transactional
     public ApiResponseDto<SuccessResponse> saveLike(Long id, Member member) {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new NullPointerException(NOT_EXIST_POST.getMsg())

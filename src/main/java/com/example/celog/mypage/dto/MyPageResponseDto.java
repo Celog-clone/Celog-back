@@ -12,9 +12,11 @@ public class MyPageResponseDto {
 
     private final Long id;
     private final String title;
+    private final String nickname;
     private final String contents;
     private final String image;
-    private final Integer likeCount;
+//    private final Integer likeCount;
+    private final Integer commentsCount;
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
 
@@ -22,9 +24,11 @@ public class MyPageResponseDto {
     private MyPageResponseDto(Post post, Member member) {
         id = post.getId();
         title = post.getTitle();
+        nickname = member.getNickname();
         contents = post.getContents();
         image = post.getUrl();
-        likeCount = post.getLikeList() == null ? 0 : post.getLikeList().size();
+//        likeCount = post.getLikeList() == null ? 0 : post.getLikeList().size();
+        commentsCount = post.getComment() == null ? 0 : post.getComment().size();
         createdAt = post.getCreatedAt();
         modifiedAt = post.getModifiedAt();
     }
