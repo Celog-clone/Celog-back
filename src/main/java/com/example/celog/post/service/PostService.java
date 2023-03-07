@@ -55,7 +55,12 @@ public class PostService {
     // 게시물 등록
     @Transactional
     public ApiResponseDto<PostAddResponseDto> addPost(PostRequestDto requestDto, Member member) throws IOException {
-        log.info("2");
+
+        // 회원 X
+        Member foundMember = memberRepository.findById(member.getId()).orElseThrow(
+                () ->  new CustomException(NOT_FOUND_MEMBER)
+        );
+
         String fileUrl = "";
         FileInfo fileInfo;
         MultipartFile file = requestDto.getImage();
@@ -92,63 +97,67 @@ public class PostService {
         String fileUrl = "";
         FileInfo fileInfo = new FileInfo(requestDto.getOriginalFileName(), requestDto.getUrl());
         MultipartFile file = requestDto.getImage();
-        Optional<Post> post = postRepository.findById(id);
 
 
         // 회원 X
-        Member foundMember = memberRepository.findByIdAndId(id,member.getId()).orElseThrow(
+        Member foundMember = memberRepository.findById(member.getId()).orElseThrow(
                 () ->  new CustomException(NOT_FOUND_MEMBER)
+        );
+        // 게시물 X
+        Post post = postRepository.findById(id).orElseThrow(
+                () ->  new CustomException(NOT_FOUND_POST)
         );
 
         // 권한 X
-        if(post.get().getId() != id)
+        if(post.getMember().getId() != member.getId())
             throw new CustomException(NO_AUTHORITY_MODIFY);
 
         // 기존 이미지 삭제
-        FileInfo fileInfo1 = new FileInfo("삭제될 이미지", post.get().getUrl());
+        FileInfo fileInfo1 = new FileInfo("삭제될 이미지", post.getUrl());
         if (!(fileInfo1.getFileUrl() == null)) {
             uploader.delete(fileInfo1.S3key());
         }
-
+        System.out.println("2222222222222222222");
         //이미지 비어있을시
         if (file.isEmpty()) {
-            post.get().update(requestDto, member);
-            return ResponseUtils.ok(PostSubResponseDto.from(post.get(), member));
+            post.update(requestDto, member);
+            return ResponseUtils.ok(PostSubResponseDto.from(post, member));
         }
         // 게시글 id 와 사용자 정보 일치한다면, 게시글 수정
-
+        System.out.println("333333333333333333");
         fileUrl = uploader.upload(file, "testImage");
         fileInfo = new FileInfo(
                 FileUtil.cutFileName(Objects.requireNonNull(file.getOriginalFilename()), 500), fileUrl);
 
         requestDto.setUrl(fileInfo.getFileUrl());
-        post.get().update(requestDto, member);
+        post.update(requestDto, member);
 
-        return  ResponseUtils.ok(PostSubResponseDto.from(post.get(), member));
+        return  ResponseUtils.ok(PostSubResponseDto.from(post, member));
 
     }
 
     // 게시물 삭제
     @Transactional
     public ApiResponseDto<SuccessResponse> deletePost(Member member, Long id) {
-        // 선택한 게시글이 DB에 있는지 확인
-        Optional<Post> found = postRepository.findById(id);
-        if (found.isEmpty()) {
-            throw new CustomException(NOT_FOUND_POST);
-        }
 
-        // 선택한 게시글의 작성자와 토큰에서 가져온 사용자 정보가 일치하는지 확인 (삭제하려는 사용자가 관리자라면 게시글 삭제 가능)
-        Optional<Post> board = postRepository.findByIdAndMember(id, member);
-        if (board.isEmpty()) { // 일치하는 게시물이 없다면
-            throw new CustomException(NOT_FOUND_POST);
-        }
+        // 회원 X
+        Member foundMember = memberRepository.findById(member.getId()).orElseThrow(
+                () -> new CustomException(NOT_FOUND_MEMBER)
+        );
+        System.out.println("1111111111111111111111111");
+        // 게시물 X
+        Post post = postRepository.findById(id).orElseThrow(
+                () -> new CustomException(NOT_FOUND_POST)
+        );
+        System.out.println("2222222222222222222222");
+        // 권한 X
+        if (post.getMember().getId() != member.getId())
+            throw new CustomException(NO_AUTHORITY_DELETE);
         // S3 이미지 삭제
 
-        Post post = postRepository
-                .findById(id).orElseThrow(() -> new RuntimeException("존재 하지 않는 파일"));
         if (post.getUrl() == null) {
             postRepository.deleteById(id);
-            return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "삭제 성공"));
+            return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "삭제 완료"));
         }
         FileInfo fileInfo = new FileInfo(post.getOriginalFilename(), post.getUrl());
         uploader.delete(fileInfo.S3key());
@@ -156,7 +165,7 @@ public class PostService {
         // 게시글 id 와 사용자 정보 일치한다면, 게시글 수정
         postRepository.deleteById(id);
         log.info("1");
-        return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "삭제 성공"));
+        return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "삭제 완료"));
     }
 
     // 게시물 전체 조회

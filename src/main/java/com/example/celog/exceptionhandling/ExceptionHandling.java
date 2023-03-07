@@ -3,8 +3,11 @@ package com.example.celog.exceptionhandling;
 import com.example.celog.common.ApiResponseDto;
 import com.example.celog.common.ErrorResponse;
 import com.example.celog.common.ResponseUtils;
+import com.example.celog.post.exception.CustomException;
+import com.example.celog.post.exception.ExceptionDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,6 +16,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice
 public class ExceptionHandling {
+
+    @ExceptionHandler(value = { CustomException.class })
+    public ResponseEntity<ExceptionDto> handleApiRequestException(CustomException ex) {
+
+        return ResponseEntity.badRequest().body(new ExceptionDto(false, null, ex.getError()));
+
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ApiResponseDto<ErrorResponse> methodValidException(MethodArgumentNotValidException e) {
