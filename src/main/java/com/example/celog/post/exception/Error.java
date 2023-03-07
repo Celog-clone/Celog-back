@@ -20,7 +20,7 @@ public enum Error {
 
     NO_AUTHORITY_DELETE("400",  "삭제 권한이 없습니다."),
     WRONG_TOKEN("400", "토큰 오류"),
-    WRONG_PASSWORD_CHECK( "400", "비밀번호, 비밀번호 확인 값 서로 불일치"),
+    WRONG_PASSWORD_CHECK( "400", "비밀번호 형식이 아닙니다"),
     VALIDATE_EMAIL_ERROR( "400", "이메일 형식이 아닙니다."),
 
     NOT_FOUND_DATE("400", "일정을 찾을 수 없습니다."),

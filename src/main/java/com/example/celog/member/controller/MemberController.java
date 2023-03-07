@@ -38,7 +38,6 @@ public class MemberController {
         }
         return memberService.signup(signupRequestDto);
     }
-
     /**
      * 로그인 메서드
      **/
