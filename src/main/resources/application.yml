@@ -29,8 +29,8 @@ cloud:
     s3:
       bucket: celog123
     credentials:
-      access-key: AKIAZCZBEBWRPCLY3LNI
-      secret-key: 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
+      access-key:
+      secret-key:
     region:
       static: ap-northeast-2
       auto: false
