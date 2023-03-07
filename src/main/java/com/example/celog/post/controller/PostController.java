@@ -21,7 +21,7 @@ public class PostController {
 
     // 게시물 등록
     @PostMapping("/posts")
-    public ApiResponseDto postAdd(@AuthenticationPrincipal UserDetailsImpl userDetails, @ModelAttribute PostRequestDto requestDto) throws IOException {
+    public ApiResponseDto postAdd(@AuthenticationPrincipal UserDetailsImpl userDetails, @ModelAttribute PostRequestDto requestDto){
         return postService.addPost(requestDto,userDetails.getUser());
     }
 
