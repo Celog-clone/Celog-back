@@ -31,7 +31,7 @@ public class CommentService {
         Post post = foundPost(id);
 
         // 댓글 작성 / 작성된 댓글 db에 저장
-        return ResponseUtils.ok(CommentResponseDto.from(commentRepository.save(Comment.of(commentRequestDto, member, post))));
+        return ResponseUtils.ok(CommentResponseDto.from(commentRepository.save(Comment.of(commentRequestDto, member, post)), member));
     }
 
     public ApiResponseDto<CommentResponseDto> modifyComment(Long id, Long comment_id, CommentRequestDto commentRequestDto, Member member) {
@@ -43,7 +43,7 @@ public class CommentService {
         comment.update(commentRequestDto, member);
         commentRepository.flush();
 
-        return ResponseUtils.ok(CommentResponseDto.from(comment));
+        return ResponseUtils.ok(CommentResponseDto.from(comment, member));
     }
 
     public ApiResponseDto<SuccessResponse> removeComment(Long id, Long comment_id, Member member) {

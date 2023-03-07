@@ -89,13 +89,13 @@ public class PostService {
         Optional<Post> post = postRepository.findById(id);
 
 
-        // 회원 X
-        Member foundMember = memberRepository.findByIdAndId(id,member.getId()).orElseThrow(
-                () ->  new CustomException(NOT_FOUND_MEMBER)
-        );
+//        // 회원 X
+//        Member foundMember = memberRepository.findByIdAndId(id,member.getId()).orElseThrow(
+//                () ->  new CustomException(NOT_FOUND_MEMBER)
+//        );
 
         // 권한 X
-        if(post.get().getId() != id)
+        if(!post.get().getId().equals(id))
             throw new CustomException(NO_AUTHORITY_MODIFY);
 
         // 기존 이미지 삭제
@@ -116,6 +116,7 @@ public class PostService {
                 FileUtil.cutFileName(Objects.requireNonNull(file.getOriginalFilename()), 500), fileUrl);
 
         requestDto.setUrl(fileInfo.getFileUrl());
+        requestDto.setOriginalFileName(fileInfo.getFileOriginName());
         post.get().update(requestDto, member);
 
         return  ResponseUtils.ok(PostSubResponseDto.from(post.get(), member));
