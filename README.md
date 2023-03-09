@@ -125,7 +125,7 @@
  
  </br>
  
-<img src = ![Celog-API - www notion so](https://user-images.githubusercontent.com/104209781/224022412-bcf6c859-530f-4506-a930-b8c69ce0e652.png) height = "350px" width = "680px" allign = "left">
+![Celog-API - www notion so](https://user-images.githubusercontent.com/104209781/224022412-bcf6c859-530f-4506-a930-b8c69ce0e652.png)
 
 </details>
 
