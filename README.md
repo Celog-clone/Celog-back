@@ -107,6 +107,8 @@
     * 리펙토링
 </details>
 
+</br>
+
 # 📈 ERD 
 <details>
 <summary>접기/펼치기</summary>
@@ -118,18 +120,37 @@
 
 </br> 
 
+# 📈 결과물
+<details>
+<summary>접기/펼치기</summary>
+ 
+ * **메인 페이지**
+ <img src = "https://user-images.githubusercontent.com/117654450/224024530-2fa308a5-d2ea-4ca4-afc9-b52f8dde143e.png" height = "350px" width = "680px" allign = "left"> 
+
+ </br>
+  
+ * **상세 페이지**
+ <img src = "https://user-images.githubusercontent.com/117654450/224025122-1fa385a2-5a33-443f-8f23-8fbffcc17996.png" height = "550px" width = "380px" allign = "left"> 
+
+ </br>
+ 
+
+ 
+</details>
+
+ </br>
+
+
 # 📝 API 명세
 
 <details>
 <summary>접기/펼치기</summary>
- 
- </br>
- 
+
 ![Celog-API - www notion so](https://user-images.githubusercontent.com/104209781/224022412-bcf6c859-530f-4506-a930-b8c69ce0e652.png)
 
 </details>
 
-</br> 
+</br>
 
 # 🧐 Convention
 <details>
