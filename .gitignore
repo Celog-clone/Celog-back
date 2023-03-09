@@ -1,10 +1,15 @@
 HELP.md
 .gradle
 build/
+application.yml
+application-common.yml
+application-db.yml
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-
+application.yml
+application-common.yml
+application-db.yml
 ### STS ###
 .apt_generated
 .classpath

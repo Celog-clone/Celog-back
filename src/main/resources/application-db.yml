@@ -1,0 +1,90 @@
+spring:
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc.batch_size: 100
+        default_fetch_size: 100
+        order_inserts: true
+        order_updates: true
+      javax:
+        persistence:
+          sharedCache.mode: ALL
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "db-local"
+
+  h2:
+    console:
+      enabled: false
+
+  jpa:
+    show-sql: true
+    database: MYSQL
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/celog?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: 123123
+
+cloud:
+  aws:
+    s3:
+      bucket: celog123
+    credentials:
+      access-key: AKIAZCZBEBWRPCLY3LNI
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+---
+spring:
+  config:
+    activate:
+      on-profile: "db-dev"
+
+  jpa:
+    show-sql: true
+    database: MYSQL
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  datasource:
+    url: jdbc:mysql://database-1.cl2ran5q1xov.ap-northeast-2.rds.amazonaws.com:3306/celog2?createDatabaseIfNotExist=true
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: admin
+      password: 123123123
+
+cloud:
+  aws:
+    s3:
+      bucket: celog123
+    credentials:
+      access-key: AKIAZCZBEBWRPCLY3LNI
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false

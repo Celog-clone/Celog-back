@@ -1,22 +1,18 @@
 spring:
-  datasource:
-    url: jdbc:h2:mem:db;MODE=MySQL
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-  h2:
-    console:
-      enabled: true
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
+  profiles:
+    active:
+      - dev
+    group:
+      local:
+        - db-local
+        - common-local
+      dev:
+        - db-dev
+        - common-dev
+    include:
+      - db
+      - common
 
-logging:
-  level:
-    org:
-      hibernate:
-        sql: debug
+jwt:
+  secret:
+    key: 7ZWt7ZW0OTntmZTsnbTtjIXtlZzqta3snYTrhIjrqLjshLjqs4TroZzrgpjslYTqsIDsnpDtm4zrpa3tlZzqsJzrsJzsnpDrpbzrp4zrk6TslrTqsIDsnpA
