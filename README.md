@@ -207,7 +207,7 @@
 
 </br>
 
-<img src = "Celog-API - www.notion.so.png" height = "350px" width = "680px" allign = "left"> 
+<img src = "[Celog-API - www.notion.so.png](https://www.notion.so/ec18ba3354da45f1bf0c2a4c5f9b8832?v=6ed2b54faf4e469dba3dc3da2fad318c)" height = "350px" width = "680px" allign = "left"> 
 </details>
 
 </br> 
