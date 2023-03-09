@@ -118,6 +118,10 @@
 
 </br> 
 
+# API 명세
+![Celog-API - www notion so](https://user-images.githubusercontent.com/104209781/224022412-bcf6c859-530f-4506-a930-b8c69ce0e652.png)
+
+
 # 🧐 Convention
 <details>
 <summary>접기/펼치기</summary>
@@ -200,17 +204,6 @@
 </details>
 
 </br>
-
-# API 명세
-<details>
-<summary>접기/펼치기</summary>
-
-</br>
-
-<img src = "[Celog-API - www.notion.so.png](https://www.notion.so/ec18ba3354da45f1bf0c2a4c5f9b8832?v=6ed2b54faf4e469dba3dc3da2fad318c)" height = "350px" width = "680px" allign = "left"> 
-</details>
-
-</br> 
 
 # 🔨 고찰
 <details>
