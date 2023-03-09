@@ -235,7 +235,7 @@
 
 </br>
 
-# 🔨 고찰
+# 🔨 트러블 슈팅
 <details>
 <summary>접기/펼치기</summary>
 
