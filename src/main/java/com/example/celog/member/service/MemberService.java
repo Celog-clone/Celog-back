@@ -4,26 +4,26 @@ import com.example.celog.common.ApiResponseDto;
 import com.example.celog.common.ResponseUtils;
 import com.example.celog.common.SuccessLoginResponse;
 import com.example.celog.common.SuccessResponse;
-import com.example.celog.jwt.JwtUtil;
-import com.example.celog.jwt.RefreshToken;
-import com.example.celog.jwt.RefreshTokenRepository;
-import com.example.celog.jwt.TokenDto;
+import com.example.celog.exception.CustomException;
+import com.example.celog.auth.jwt.JwtUtil;
+import com.example.celog.auth.jwt.RefreshToken;
+import com.example.celog.auth.jwt.RefreshTokenRepository;
+import com.example.celog.auth.jwt.TokenDto;
 import com.example.celog.member.dto.LoginRequestDto;
 import com.example.celog.member.dto.SignupRequestDto;
 import com.example.celog.member.entity.Member;
 import com.example.celog.member.repository.MemberRepository;
-import com.example.celog.post.exception.CustomException;
-import com.example.celog.post.exception.Error;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
+
+import static com.example.celog.exception.enumclass.Error.*;
 
 @Service
 @RequiredArgsConstructor
@@ -34,22 +34,13 @@ public class MemberService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtUtil jwtUtil;
 
-    private final PasswordEncoder passwordEncoder;
-
-
     /**
      * 회원가입 기능
     * */
     @Transactional
-    public ApiResponseDto signup(SignupRequestDto signupRequestDto) {
+    public ApiResponseDto<SuccessResponse> signup(SignupRequestDto signupRequestDto) {
         memberCheck(signupRequestDto.getEmail());
-        memberRepository.save(
-                Member.builder()
-                        .password(passwordEncoder.encode(signupRequestDto.getPassword()))
-                        .email(signupRequestDto.getEmail())
-                        .nickname(signupRequestDto.getNickname())
-                        .build());
-
+        memberRepository.save(Member.of(signupRequestDto));
         return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"회원가입 성공"));
     }
 
@@ -57,13 +48,13 @@ public class MemberService {
      * 로그인 기능
      */
     @Transactional
-    public ApiResponseDto login(LoginRequestDto requestDto, HttpServletResponse response) {
+    public ApiResponseDto<SuccessLoginResponse> login(LoginRequestDto requestDto, HttpServletResponse response) {
         String email = requestDto.getEmail();
         String password = requestDto.getPassword();
 
         Optional<Member> findMember = memberRepository.findByEmail(email);
-        if(findMember.isEmpty() || !passwordEncoder.matches(password,findMember.get().getPassword())){
-            throw new NullPointerException("회원이 없습니다.");
+        if(findMember.isEmpty() || !password.equals(findMember.get().getPassword())){
+            throw new CustomException(NOT_EXIST_USER);
         }
 
         TokenDto tokenDto = jwtUtil.createAllToken(email);
@@ -85,10 +76,10 @@ public class MemberService {
 
 
     @Transactional
-    public ApiResponseDto memberCheck(String email)  {
+    public ApiResponseDto<SuccessResponse> memberCheck(String email)  {
         Optional<Member> findMember = memberRepository.findByEmail(email);
         if(findMember.isPresent()){
-            throw new CustomException(Error.DUPLICATED_EMAIL);
+            throw new CustomException(DUPLICATED_EMAIL);
         }
         return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "사용 가능한 계정입니다."));
     }
@@ -96,14 +87,14 @@ public class MemberService {
     /**
      * 토큰 갱신
      **/
-    public SuccessResponse issueToken(HttpServletRequest request, HttpServletResponse response) {
+    public ApiResponseDto<SuccessResponse> issueToken(HttpServletRequest request, HttpServletResponse response) {
         String refreshToken = jwtUtil.resolveToken(request, "Refresh");
         if(!jwtUtil.refreshTokenValidation(refreshToken)){
-            throw new CustomException(Error.WRONG_TOKEN);
+            throw new CustomException(WRONG_TOKEN);
         }
 
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(jwtUtil.getUserId(refreshToken), "Access"));
-        return SuccessResponse.of(HttpStatus.OK, "토큰 갱신 성공.");
+        return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "토큰 갱신 성공."));
     }
 
 }

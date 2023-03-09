@@ -1,4 +1,4 @@
-package com.example.celog.security;
+package com.example.celog.auth.security;
 
 import lombok.Getter;
 import com.example.celog.member.entity.Member;

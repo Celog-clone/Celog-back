@@ -1,12 +1,10 @@
-package com.example.celog.exceptionhandling;
+package com.example.celog.exception;
 
 import com.example.celog.common.ApiResponseDto;
 import com.example.celog.common.ErrorResponse;
 import com.example.celog.common.ResponseUtils;
-import com.example.celog.post.exception.CustomException;
-import com.example.celog.post.exception.ExceptionDto;
+import com.example.celog.exception.enumclass.Error;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -45,10 +43,10 @@ public class ExceptionHandling {
             message = bindingResult.getAllErrors().get(0).getDefaultMessage();
         }
 
-        return ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), message);
+        return ErrorResponse.of(Error.BAD_REQUEST.getStatus(), message);
     }
 
     private ErrorResponse errorResponse(String message) {
-        return ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), message);
+        return ErrorResponse.of(Error.BAD_REQUEST.getStatus(), message);
     }
 }

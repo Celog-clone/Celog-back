@@ -1,12 +1,14 @@
 package com.example.celog.member.controller;
 
 import com.example.celog.common.ApiResponseDto;
+import com.example.celog.common.ResponseUtils;
+import com.example.celog.common.SuccessLoginResponse;
 import com.example.celog.common.SuccessResponse;
 import com.example.celog.member.dto.LoginRequestDto;
 import com.example.celog.member.dto.SignupRequestDto;
 import com.example.celog.member.service.MemberService;
-import com.example.celog.post.exception.CustomException;
-import com.example.celog.post.exception.Error;
+import com.example.celog.exception.CustomException;
+import com.example.celog.exception.enumclass.Error;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,7 +32,8 @@ public class MemberController {
      */
 
     @PostMapping("/members/signup")
-    public ApiResponseDto signup(@Valid @RequestBody SignupRequestDto signupRequestDto, BindingResult result) {
+    public ApiResponseDto<SuccessResponse> signup(@Valid @RequestBody SignupRequestDto signupRequestDto,
+                                                  BindingResult result) {
         if (result.hasErrors()){
             if (result.getFieldError().getDefaultMessage().equals("패스워드에러"))
                 throw new CustomException(Error.WRONG_PASSWORD_CHECK);
@@ -42,7 +45,8 @@ public class MemberController {
      * 로그인 메서드
      **/
     @PostMapping("/members/login")
-    public ApiResponseDto login(@RequestBody LoginRequestDto requestDto, HttpServletResponse response){
+    public ApiResponseDto<SuccessLoginResponse> login(@RequestBody LoginRequestDto requestDto,
+                                                      HttpServletResponse response){
         return memberService.login(requestDto,response);
     }
 
@@ -51,16 +55,17 @@ public class MemberController {
      */
 
     @GetMapping("/members")
-    public SuccessResponse memberCheck( @RequestParam("email") String email) {
+    public ApiResponseDto<SuccessResponse> memberCheck( @RequestParam("email") String email) {
         memberService.memberCheck(email);
-        return SuccessResponse.of(HttpStatus.OK,"사용가능한 계정입니다");
+        return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK,"사용가능한 계정입니다"));
     }
 
     /**
      * 회원 토큰 갱신
     **/
     @GetMapping("/members/token")
-    public  SuccessResponse issuedToken(HttpServletRequest request, HttpServletResponse response){
+    public  ApiResponseDto<SuccessResponse> issuedToken(HttpServletRequest request,
+                                                        HttpServletResponse response){
         return memberService.issueToken(request,response);
     }
 

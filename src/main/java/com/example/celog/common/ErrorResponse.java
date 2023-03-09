@@ -1,6 +1,6 @@
 package com.example.celog.common;
 
-import com.example.celog.enumclass.ExceptionEnum;
+import com.example.celog.exception.enumclass.Error;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,26 +8,26 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ErrorResponse {
-    private int status;
+    private String status;
     private String message;
 
     @Builder
-    private ErrorResponse(int status, String message) {
+    private ErrorResponse(String status, String message) {
         this.status = status;
         this.message = message;
     }
 
-    public static ErrorResponse of(int status, String message){
+    public static ErrorResponse of(String status, String message){
         return ErrorResponse.builder()
                 .status(status)
                 .message(message)
                 .build();
     }
 
-    public static ErrorResponse of(ExceptionEnum exceptionEnum) {
+    public static ErrorResponse of(Error error) {
         return ErrorResponse.builder()
-                .status(exceptionEnum.getCode())
-                .message(exceptionEnum.getMsg())
+                .status(error.getStatus())
+                .message(error.getMessage())
                 .build();
     }
 }

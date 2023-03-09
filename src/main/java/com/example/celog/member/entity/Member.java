@@ -1,6 +1,6 @@
 package com.example.celog.member.entity;
 
-
+import com.example.celog.member.dto.SignupRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,12 +24,18 @@ public class Member {
 
 
 
-    @Builder
-    public Member(String password, String nickname, String email) {
-        this.password = password;
-        this.nickname = nickname;
-        this.email = email;
 
+    @Builder
+    private Member(SignupRequestDto signupRequestDto) {
+        password = signupRequestDto.getPassword();
+        nickname = signupRequestDto.getNickname();
+        email = signupRequestDto.getEmail();
+    }
+
+    public static Member of(SignupRequestDto signupRequestDto) {
+        return Member.builder()
+                .signupRequestDto(signupRequestDto)
+                .build();
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.celog.like.service;
 import com.example.celog.common.ApiResponseDto;
 import com.example.celog.common.ResponseUtils;
 import com.example.celog.common.SuccessResponse;
+import com.example.celog.exception.CustomException;
 import com.example.celog.like.entity.Like;
 import com.example.celog.like.repository.LikeRepository;
 import com.example.celog.member.entity.Member;
@@ -15,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static com.example.celog.enumclass.ExceptionEnum.NOT_EXIST_POST;
+import static com.example.celog.exception.enumclass.Error.NOT_FOUND_POST;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class LikeService {
     @Transactional
     public ApiResponseDto<SuccessResponse> saveLike(Long id, Member member) {
         Post post = postRepository.findById(id).orElseThrow(
-                () -> new NullPointerException(NOT_EXIST_POST.getMsg())
+                () -> new CustomException(NOT_FOUND_POST)
         );
 
         Optional<Like> found = likeRepository.findByPostAndMember(post, member);
@@ -36,7 +37,6 @@ public class LikeService {
             return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "좋아요 성공"));
         } else {
             likeRepository.delete(found.get());
-            likeRepository.flush();
             return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "좋아요 취소"));
         }
     }

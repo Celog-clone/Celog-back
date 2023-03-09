@@ -5,7 +5,7 @@ import com.example.celog.comment.dto.CommentResponseDto;
 import com.example.celog.comment.service.CommentService;
 import com.example.celog.common.ApiResponseDto;
 import com.example.celog.common.SuccessResponse;
-import com.example.celog.security.UserDetailsImpl;
+import com.example.celog.auth.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

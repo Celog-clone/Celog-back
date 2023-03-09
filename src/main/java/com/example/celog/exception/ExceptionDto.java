@@ -1,5 +1,6 @@
-package com.example.celog.post.exception;
+package com.example.celog.exception;
 
+import com.example.celog.exception.enumclass.Error;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,12 +16,13 @@ public class ExceptionDto {
     private String response;
 
     private Map<String,String> error = new HashMap<>();
+    private Map<String,Integer> error2 = new HashMap<>();
 
 
-    public ExceptionDto(Boolean success, String response, Error error){
+    public ExceptionDto(Boolean success, String response, Error error, Error error2){
         this.success = success;
         this.response = response;
-        this.error.put("status", error.getStatus());
+        this.error.put("status", error2.getStatus());
         this.error.put("message", error.getMessage());
     }
 }

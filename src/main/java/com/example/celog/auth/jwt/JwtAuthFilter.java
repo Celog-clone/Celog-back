@@ -1,4 +1,4 @@
-package com.example.celog.jwt;
+package com.example.celog.auth.jwt;
 
 
 import com.example.celog.common.ErrorResponse;
@@ -61,7 +61,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         response.setStatus(statusCode);
         response.setContentType("application/json");
         try {
-            String json = new ObjectMapper().writeValueAsString(ErrorResponse.of(statusCode,msg));
+            String json = new ObjectMapper().writeValueAsString(ErrorResponse.of(String.valueOf(statusCode), msg));
             response.getWriter().write(json);
         } catch (Exception e) {
             log.error(e.getMessage());

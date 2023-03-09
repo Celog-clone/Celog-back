@@ -9,35 +9,29 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class CommentResponseDto {
+public class CommentNoNicknameResponseDto {
 
     private Long id;
     private String comments;
-    private String nickname;
+    private String comment_nickname;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createAt;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime modifiedAt;
 
     @Builder
-    private CommentResponseDto(Comment comment, Member member) {
+    private CommentNoNicknameResponseDto(Comment comment, Member member) {
         id = comment.getId();
         comments = comment.getComments();
-        nickname = member.getNickname();
+        comment_nickname = member.getNickname();
         createAt = comment.getCreatedAt();
         modifiedAt = comment.getModifiedAt();
     }
 
-    public static CommentResponseDto from(Comment comment, Member member) {
-        return CommentResponseDto.builder()
+    public static CommentNoNicknameResponseDto from(Comment comment, Member member) {
+        return CommentNoNicknameResponseDto.builder()
                 .comment(comment)
                 .member(member)
-                .build();
-    }
-
-    public static CommentResponseDto from(Comment comment) {
-        return CommentResponseDto.builder()
-                .comment(comment)
                 .build();
     }
 

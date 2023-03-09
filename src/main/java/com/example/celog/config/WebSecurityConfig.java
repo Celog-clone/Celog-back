@@ -1,7 +1,7 @@
 package com.example.celog.config;
 
-import com.example.celog.jwt.JwtAuthFilter;
-import com.example.celog.jwt.JwtUtil;
+import com.example.celog.auth.jwt.JwtAuthFilter;
+import com.example.celog.auth.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;

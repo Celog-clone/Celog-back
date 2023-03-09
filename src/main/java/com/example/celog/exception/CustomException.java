@@ -1,5 +1,6 @@
-package com.example.celog.post.exception;
+package com.example.celog.exception;
 
+import com.example.celog.exception.enumclass.Error;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

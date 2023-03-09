@@ -1,7 +1,6 @@
-package com.example.celog.jwt;
+package com.example.celog.auth.jwt;
 
-
-import com.example.celog.security.UserDetailsServiceImpl;
+import com.example.celog.auth.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example.celog.jwt;
+package com.example.celog.auth.jwt;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

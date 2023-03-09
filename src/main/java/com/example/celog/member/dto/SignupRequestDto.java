@@ -1,7 +1,6 @@
 package com.example.celog.member.dto;
 
 import lombok.Getter;
-import org.springframework.security.core.parameters.P;
 
 import javax.validation.constraints.Pattern;
 

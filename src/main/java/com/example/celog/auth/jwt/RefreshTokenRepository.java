@@ -1,6 +1,5 @@
-package com.example.celog.jwt;
+package com.example.celog.auth.jwt;
 
-import com.example.celog.jwt.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

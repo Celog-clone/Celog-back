@@ -1,20 +1,20 @@
 package com.example.celog.post.service;
 
-import com.example.celog.comment.dto.CommentResponseDto;
+import com.example.celog.comment.dto.CommentNoNicknameResponseDto;
 import com.example.celog.comment.entity.Comment;
+import com.example.celog.comment.repository.CommentRepository;
 import com.example.celog.common.ApiResponseDto;
 import com.example.celog.common.ResponseUtils;
 import com.example.celog.common.SuccessResponse;
 import com.example.celog.common.s3.FileUtil;
 import com.example.celog.common.s3.Uploader;
+import com.example.celog.exception.CustomException;
 import com.example.celog.like.entity.Like;
 import com.example.celog.like.repository.LikeRepository;
 import com.example.celog.member.entity.Member;
-import com.example.celog.member.repository.MemberRepository;
 import com.example.celog.post.dto.*;
 import com.example.celog.post.entity.FileInfo;
 import com.example.celog.post.entity.Post;
-import com.example.celog.post.exception.CustomException;
 import com.example.celog.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.example.celog.post.exception.Error.*;
+import static com.example.celog.exception.enumclass.Error.*;
 
 
 @Service
@@ -39,7 +39,7 @@ public class PostService {
 
 
     private final PostRepository postRepository;
-    private final MemberRepository memberRepository;
+    private final CommentRepository commentRepository;
 
     private final LikeRepository likeRepository;
 
@@ -54,7 +54,7 @@ public class PostService {
         FileInfo fileInfo;
         MultipartFile file = requestDto.getImage();
 
-        if (file.isEmpty()||file == null) {
+        if (file.isEmpty()) {
             Post post = postRepository.save(Post.of(requestDto, member));
             return ResponseUtils.ok(PostAddResponseDto.from(post, member));
         }
@@ -65,11 +65,9 @@ public class PostService {
             requestDto.setUrl(fileInfo.getFileUrl());
             requestDto.setOriginalFileName(file.getOriginalFilename());
         } catch (IOException ie) {
-            log.info("S3파일 저장 중 예외 발생");
             throw new CustomException(FAIL_S3_SAVE);
 
         } catch (Exception e) {
-            log.info("s3에 저장되었던 파일 삭제");
             uploader.delete(fileUrl.substring(fileUrl.lastIndexOf(".com/") + 5));
             throw new CustomException(DELETE_S3_FILE);
         }
@@ -81,22 +79,16 @@ public class PostService {
 
     // 게시물 수정
     @Transactional
-    public ApiResponseDto<PostSubResponseDto> modifyPost(PostRequestDto requestDto, Member member, Long id) throws IOException {
+    public ApiResponseDto<PostSubResponseDto> modifyPost(PostRequestDto requestDto, Member member, Long id) {
 
         String fileUrl = "";
         FileInfo fileInfo = new FileInfo(requestDto.getOriginalFileName(), requestDto.getUrl());
         MultipartFile file = requestDto.getImage();
         Optional<Post> post = postRepository.findById(id);
 
-
-//        // 회원 X
-//        Member foundMember = memberRepository.findByIdAndId(id,member.getId()).orElseThrow(
-//                () ->  new CustomException(NOT_FOUND_MEMBER)
-//        );
-
         // 권한 X
-        if(!post.get().getId().equals(id))
-            throw new CustomException(NO_AUTHORITY_MODIFY);
+        if(!post.get().getMember().getId().equals(member.getId()))
+            throw new CustomException(NO_AUTHORITY);
 
         // 기존 이미지 삭제
         FileInfo fileInfo1 = new FileInfo("삭제될 이미지", post.get().getUrl());
@@ -111,7 +103,11 @@ public class PostService {
         }
         // 게시글 id 와 사용자 정보 일치한다면, 게시글 수정
 
-        fileUrl = uploader.upload(file, "testImage");
+        try {
+            fileUrl = uploader.upload(file, "testImage");
+        } catch (IOException e) {
+            throw new CustomException(FAIL_S3_SAVE);
+        }
         fileInfo = new FileInfo(
                 FileUtil.cutFileName(Objects.requireNonNull(file.getOriginalFilename()), 500), fileUrl);
 
@@ -182,37 +178,35 @@ public class PostService {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new CustomException(NOT_FOUND_POST)
         );
-        List<CommentResponseDto> list = new ArrayList<>();
-        for(Comment comment : post.getComment()){
-            list.add(CommentResponseDto.from(comment));
+        List<Comment> commentList = commentRepository.findAllByPostIdOrderByModifiedAtDesc(id);
+
+        List<CommentNoNicknameResponseDto> commentResponseDtoList = new ArrayList<>();
+        for (Comment comment : commentList) {
+            Member member = commentRepository.findById(comment.getId()).orElseThrow().getMember();
+            commentResponseDtoList.add(CommentNoNicknameResponseDto.from(comment, member));
         }
 
-        PostResponseDtoWithComments responseDto = PostResponseDtoWithComments.from(post, post.getMember(), list);
+        PostResponseDtoWithComments responseDto = PostResponseDtoWithComments.from(post, post.getMember(), commentResponseDtoList);
         return ResponseUtils.ok(responseDto);
     }
 
     // 게시물 검색 조회
     @Transactional(readOnly = true)
-    public ApiResponseDto<List<PostLikeResponseDto>> searchPost(String name){
-        if(name.equals(""))
-            throw new CustomException(NOT_FOUND_SEARCH);
+    public ApiResponseDto<List<PostResponseDto>> searchPost(String name){
 
         List<Post> foundPostList= postRepository.findByTitleContaining(name).orElseThrow(
                 () -> new CustomException(NOT_FOUND_SEARCH)
         );
 
-        List<PostLikeResponseDto> responseDtoList = new ArrayList<>();
+        List<PostResponseDto> responseDtoList = new ArrayList<>();
 
         for(Post post : foundPostList){
             List<Like> likeCount = likeRepository.findByPost(post).orElseThrow(
                     () -> new CustomException(NOT_FOUND_POST)
             );
-            responseDtoList.add(PostLikeResponseDto.from(post, post.getMember(), likeCount.size()));
+            responseDtoList.add(PostResponseDto.from(post, post.getMember(), likeCount.size()));
         }
 
-
-        for(Post post : foundPostList)
-            responseDtoList.add(PostLikeResponseDto.from(post, post.getMember(), post.getComment().size()));
         return ResponseUtils.ok(responseDtoList);
     }
 }

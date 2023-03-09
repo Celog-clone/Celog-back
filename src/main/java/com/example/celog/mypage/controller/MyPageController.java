@@ -3,7 +3,7 @@ package com.example.celog.mypage.controller;
 import com.example.celog.common.ApiResponseDto;
 import com.example.celog.mypage.dto.MyPageResponseDto;
 import com.example.celog.mypage.service.MyPageService;
-import com.example.celog.security.UserDetailsImpl;
+import com.example.celog.auth.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;

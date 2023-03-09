@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -67,17 +66,6 @@ public class S3Uploader implements Uploader{
         }
     }
 
-//    private Optional<File> convert(MultipartFile file) throws IOException {
-//        File convertFile = new File(file.getOriginalFilename());
-//        if(convertFile.createNewFile()) {
-//            try (FileOutputStream fos = new FileOutputStream(convertFile)) {
-//                fos.write(file.getBytes());
-//            }
-//            return Optional.of(convertFile);
-//        }
-//
-//        return Optional.empty();
-//    }
     public static File convert(MultipartFile file) throws IOException {
 
         File convFile = new File(file.getOriginalFilename());

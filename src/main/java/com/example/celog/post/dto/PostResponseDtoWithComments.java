@@ -1,6 +1,6 @@
 package com.example.celog.post.dto;
 
-import com.example.celog.comment.dto.CommentResponseDto;
+import com.example.celog.comment.dto.CommentNoNicknameResponseDto;
 import com.example.celog.member.entity.Member;
 import com.example.celog.post.entity.Post;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -26,18 +26,18 @@ public class PostResponseDtoWithComments {
 
     private String nickname;
 
-    private List<CommentResponseDto> commentList = new ArrayList<>();
+    private List<CommentNoNicknameResponseDto> commentList = new ArrayList<>();
 
     private Integer likeCount;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm:ss", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm:ss", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime modifiedAt;
 
     @Builder
-    private PostResponseDtoWithComments(Post post, Member member, List<CommentResponseDto> commentList) {
+    private PostResponseDtoWithComments(Post post, Member member, List<CommentNoNicknameResponseDto> commentList) {
         id = post.getId();
         title = post.getTitle();
         contents = post.getContents();
@@ -49,7 +49,7 @@ public class PostResponseDtoWithComments {
         this.commentList = commentList;
     }
 
-    public static PostResponseDtoWithComments from(Post post, Member member, List<CommentResponseDto> commentList) {
+    public static PostResponseDtoWithComments from(Post post, Member member, List<CommentNoNicknameResponseDto> commentList) {
         return PostResponseDtoWithComments.builder()
                 .post(post)
                 .member(member)

@@ -7,6 +7,7 @@ import com.example.celog.comment.repository.CommentRepository;
 import com.example.celog.common.ApiResponseDto;
 import com.example.celog.common.ResponseUtils;
 import com.example.celog.common.SuccessResponse;
+import com.example.celog.exception.CustomException;
 import com.example.celog.member.entity.Member;
 import com.example.celog.post.entity.Post;
 import com.example.celog.post.repository.PostRepository;
@@ -15,7 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.example.celog.enumclass.ExceptionEnum.*;
+import static com.example.celog.exception.enumclass.Error.*;
 
 
 @Service
@@ -57,17 +58,18 @@ public class CommentService {
     private Comment foundMemberAndComment(Long comment_id, Member member) {
         Member found = commentRepository.findById(comment_id).get().getMember();
         if (!member.getId().equals(found.getId())) {
-            throw new IllegalArgumentException(NOT_MY_CONTENT.getMsg());
+
+            throw new CustomException(NOT_MY_CONTENT);
         }
 
         return commentRepository.findById(comment_id).orElseThrow(
-                () -> new NullPointerException(NOT_EXIST_COMMENT.getMsg())
+                () -> new CustomException(NOT_EXIST_COMMENT)
         );
     }
 
     private Post foundPost(Long id) {
         return postRepository.findById(id).orElseThrow(
-                () -> new NullPointerException(NOT_EXIST_POST.getMsg())
+                () -> new CustomException(NOT_FOUND_POST)
         );
     }
 }
