@@ -118,9 +118,14 @@
 
 </br> 
 
-# API 명세
+# 📝 API 명세
+
+<details>
+<summary>접기/펼치기</summary>
+
 ![Celog-API - www notion so](https://user-images.githubusercontent.com/104209781/224022412-bcf6c859-530f-4506-a930-b8c69ce0e652.png)
 
+</details>
 
 # 🧐 Convention
 <details>
