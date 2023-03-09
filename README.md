@@ -121,17 +121,37 @@
 <details>
 <summary>접기/펼치기</summary>
  
- * **메인 페이지**
- <img src = "https://user-images.githubusercontent.com/117654450/224024530-2fa308a5-d2ea-4ca4-afc9-b52f8dde143e.png" height = "350px" width = "680px" allign = "left"> 
-
  </br>
-  
- * **상세 페이지**
- <img src = "https://user-images.githubusercontent.com/117654450/224025122-1fa385a2-5a33-443f-8f23-8fbffcc17996.png" height = "550px" width = "380px" allign = "left"> 
+ 
+ * **회원 가입**
+ <img src = "https://user-images.githubusercontent.com/117654450/224037604-598ad306-7ef0-4436-a18f-48de6eebcf1e.png" height = "480px" width = "400px" allign = "left"> 
 
  </br>
  
+* **로그인**
+ <img src = "https://user-images.githubusercontent.com/117654450/224037861-16b9ac0a-3275-4e84-85d5-fb3fb7ca82a2.png" height = "480px" width = "400px" allign = "left"> 
 
+ </br>
+ 
+ * **메인 페이지**
+ <img src = "https://user-images.githubusercontent.com/117654450/224024530-2fa308a5-d2ea-4ca4-afc9-b52f8dde143e.png" height = "470px" width = "680px" allign = "left"> 
+
+ </br>
+ 
+ * **글 작성**
+ <img src = "https://user-images.githubusercontent.com/117654450/224039077-b3ffd403-21de-422d-aa27-920b44fa6a9a.png" height = "470px" width = "380px" allign = "left">
+
+  </br>
+ 
+ * **상세 페이지**
+ <img src = "https://user-images.githubusercontent.com/117654450/224034913-13e3239b-2c0b-420a-8372-84a89b741d36.png" height = "470px" width = "380px" allign = "left"> 
+
+ </br>
+ 
+ * **마이 페이지**
+<img src = "https://user-images.githubusercontent.com/117654450/224038797-284aa3fa-1392-4a23-8818-3f3c90f90d2b.png" height = "470px" width = "380px" allign = "left"> 
+ 
+ </br>
  
 </details>
 
