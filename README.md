@@ -149,7 +149,7 @@
  </br> </br>
  
  * **마이 페이지**
-<img src = "https://user-images.githubusercontent.com/117654450/224038797-284aa3fa-1392-4a23-8818-3f3c90f90d2b.png" height = "470px" width = "380px" allign = "left"> 
+<img src = "https://user-images.githubusercontent.com/117654450/224049944-23c6c7ca-ea2d-4af7-a2cf-f2f4e2bec989.png" height = "470px" width = "380px" allign = "left"> 
  
  </br>
  
